@@ -1,5 +1,13 @@
 import java.util.Scanner;
 
+// 입력
+// 5
+// -3 2 0 -1 2
+// 2
+
+// 결과 값
+// 2
+
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
