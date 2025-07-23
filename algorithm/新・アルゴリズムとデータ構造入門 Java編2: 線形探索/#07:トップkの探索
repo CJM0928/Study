@@ -1,0 +1,45 @@
+import java.util.Scanner;
+
+// 整数 n と、要素数 n の数列 A と、整数 k が与えられるので、数列 A に含まれる数のうち、k 番目に大きいものを出力してください。
+
+// 입력
+// 5
+// 3 2 6 5 1
+// 4
+
+// 출력
+// 2
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        // 입력을 받음
+        int n = sc.nextInt();
+        int[] a = new int[n];
+        for(int i=0; i<n; i++){
+            a[i] = sc.nextInt();
+        }
+        int k = sc.nextInt();
+        
+        // 답을 보존할 변수를 준비
+        int maximum = 1000000001;
+        
+        // k번 순회할 루프를 작성 (k번째 큰 숫자를 찾기위한 for문)
+        for(int i=0; i<k; i++){
+            // 배열에 포함되는 maximum 미만의 수의 최대값을 보존하는 변수 nextMaximum을 준비
+            int nextMaximum = -1000000001;
+            
+            // 배열의 모든 요소를 체크하는 루프 작성
+            for(int value : a){
+                if(value < maximum){
+                    nextMaximum = Math.max(nextMaximum, value);
+                }
+            }
+            
+            // maximum을 갱신
+            maximum = nextMaximum;
+        }
+        
+        System.out.println(maximum);
+    }
+}
