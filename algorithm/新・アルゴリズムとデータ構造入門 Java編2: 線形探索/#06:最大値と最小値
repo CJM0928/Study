@@ -1,0 +1,37 @@
+import java.util.Scanner;
+// 整数 n と、要素数 n の数列 A が与えられるので、数列 A の最大値と最小値を求め、半角スペース区切りで 1 行に出力してください。
+
+// 입력
+// 5
+// 3 2 6 5 2
+
+// 출력
+// 6 2
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        // 입력을 받는다.
+        int n = sc.nextInt();
+        int[] a = new int[n];
+        
+        for(int i=0; i<n; i++){
+            a[i] = sc.nextInt();
+        }
+        
+        // 값을 보존하는 변수를 준비
+        int maximum = -1000000000;
+        int minimum = 1000000000;
+        
+        //배열의 모든 요소를 체크하는 루프를 작성
+        for(int value : a){
+            //최대값 갱신
+            maximum = Math.max(maximum, value);
+            //최소값 갱신
+            minimum = Math.min(minimum, value);
+        }
+        
+        // 답을 출력
+        System.out.println(maximum + " " + minimum);
+    }
+}
