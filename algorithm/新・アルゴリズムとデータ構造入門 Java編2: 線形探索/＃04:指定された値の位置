@@ -1,0 +1,40 @@
+import java.util.Scanner;
+
+// 整数 n と、要素数 n の数列 A、整数 k が与えられるので、整数 k が数列 A の何番目にあるかを求めてください。
+// なお、最初の要素 (A_1) を 1 番目とします。ただし、数列に整数 k が含まれていない場合は、0 を出力してください。
+// また、数列に整数 k が複数含まれている場合は、数列を先頭から順に見たときに最初に現れる k が数列の何番目にあるかを求めてください。
+
+// 입력
+// 5
+// -3 2 0 -1 2
+// 2
+
+// 답
+// 2
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        // 입력을 받는다
+        int n = sc.nextInt();
+        int[] a = new int[n];
+        for(int i = 0; i<n; i++){
+            a[i] = sc.nextInt();
+        }
+        int k = sc.nextInt();
+        // 답을 보관할 변수를 준비
+        int index = 0;
+        
+        // 배열의 전 요소를 체크해서 루프를 돌림
+        for(int i=0; i<n; i++){
+            // 요소와 k가 일치한다면, index값을 보존하고, 루프 벗어남
+            if(a[i] == k){
+                index = i;
+                break;
+            }
+        }
+        
+        // 답을 출력함
+        System.out.println(index+1);
+    }
+}
