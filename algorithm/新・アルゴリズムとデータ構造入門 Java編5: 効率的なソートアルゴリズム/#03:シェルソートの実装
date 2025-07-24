@@ -1,0 +1,68 @@
+import java.util.Scanner;
+
+// 整数 n と要素数 n の数列 A 、整数 k と要素数 k の数列 h が与えられるので、この数列を与えられた間隔列 h でシェルソートでソートしてください。
+// 右側のコードエリアに用意されているコードには誤りがあります。訂正し、問題を解くコードを完成させてください。
+
+// 입력 값
+// 4
+// 8 1 3 2
+// 1
+// 1
+
+// 출력 값
+// 4
+
+public class Main {
+
+    static void insertionSort(int[] a, int n, int h) {
+        int numOfMove = 0;
+
+        // i が h から n - 1 までのループを書く
+        for (int i = h; i < n; i++) {
+            // A_i を x に保存する
+            int x = a[i];
+            // 変数 j を用意する
+            int j = i - h;
+            // j が 0 以上で、A_j が x より大きい間
+            while (j >= 0 && a[j] > x) {
+                // A_j を h だけ右にずらす
+                a[j+h] = a[j];
+                // j を h だけ減らす
+                j -= h;
+                numOfMove++;
+            }
+
+            // A_{j + h} に x を代入する
+            a[j+h] = x;
+        }
+
+        System.out.println(numOfMove);
+    }
+
+    static void shellSort(int[] a, int n, int[] h, int k) {
+    for (int i = 0; i < k; i++) {
+        // 間隔 h の挿入ソートを呼び出す
+        insertionSort(a, n, h[i]);
+    }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();       // 10
+
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();    // 7 6 10 2 5 4 8 3 9 1
+        }
+
+        int k = sc.nextInt();       // 2
+
+        int[] h = new int[k];
+        for (int i = 0; i < k; i++) {
+            h[i] = sc.nextInt();    // 4 1
+        }
+
+        shellSort(a, n, h, k);
+    }
+}
