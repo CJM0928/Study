@@ -1,0 +1,54 @@
+import java.util.Scanner;
+
+// 整数 n と、要素数 n の整数列 a が与えられるので、バブルソートで a を小さい順にソートするプログラムを作成してください。
+// アルゴリズムが正しく実装されていることを確認するために、各 i (i = 1, 2, ..., n - 1) について i 回目の処理が終わった時点での配列を出力してください。
+
+// 입력 값
+// 5
+// 4 1 3 5 2
+
+// 출력 값
+// 1 4 2 3 5
+// 1 2 4 3 5
+// 1 2 3 4 5
+// 1 2 3 4 5
+
+public class Main {
+	static void print(int[] a, int n) {
+		for (int i = 0; i < n; i++) {
+			if (i > 0)
+				System.out.print(" ");
+			System.out.print(a[i]);
+		}
+		System.out.println();
+	}
+
+	static void bubbleSort(int[] a, int n) {
+		for (int i = 0; i < n - 1; i++) {
+			// j를 n-1부터 i+1까지 for문을 준비
+			for(int j = n - 1; j > i; j--){
+			    // 내림차순으로
+			    if(a[j-1] > a[j]){
+			        // a[j-1] 와 a[j]을 교환
+			        int swap = a[j];
+			        a[j] = a[j-1];
+			        a[j-1] = swap;
+			    }
+			}
+			print(a, n);
+		}
+	}
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+
+		int n = sc.nextInt();
+
+		int[] a = new int[n];
+		for (int i = 0; i < n; i++) {
+			a[i] = sc.nextInt();
+		}
+
+		bubbleSort(a, n);
+	}
+}
