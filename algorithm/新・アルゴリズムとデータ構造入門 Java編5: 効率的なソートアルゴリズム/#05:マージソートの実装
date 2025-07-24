@@ -1,0 +1,72 @@
+import java.util.Scanner;
+
+public class Main {
+
+    static final int INF = 1000000001;
+    static int count = 0;
+
+    static void merge(int[] a, int left, int mid, int right) {
+        int nl = mid - left;
+        int nr = right - mid;
+
+        int[] l = new int[nl + 1];
+        int[] r = new int[nr + 1];
+        for (int i = 0; i < nl; i++) {
+            l[i] = a[left + i];
+        }
+        for (int i = 0; i < nr; i++) {
+            r[i] = a[mid + i];
+        }
+        l[nl] = INF;
+        r[nr] = INF;
+
+        int lIndex = 0;
+        int rIndex = 0;
+
+        for (int i = left; i < right; i++) {
+            if (l[lIndex] < r[rIndex]) {
+                a[i] = l[lIndex];
+                lIndex++;
+            } else {
+                a[i] = r[rIndex];
+                rIndex++;
+                count++;
+            }
+        }
+    }
+    
+    // 감각적으로 외우기 (재귀 라서 계산 복잡해짐)
+    static void mergeSort(int a[], int left, int right) {   // 8 1 3 2 , 0 , 4
+        if (left >= right - 1)
+            return;
+
+        int mid = (left + right) / 2;
+        mergeSort(a, left, mid);
+        mergeSort(a, mid, right);
+        merge(a, left, mid, right);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();           // 4
+
+        int a[] = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();        // 8 1 3 2
+        }
+
+        mergeSort(a, 0, n);
+
+        for (int i = 0; i < n; i++) {
+            if (i > 0) {
+                System.out.print(" ");
+            }
+            System.out.print(a[i]);
+        }
+        System.out.println();
+
+        System.out.println(count);
+    }
+}
+  
