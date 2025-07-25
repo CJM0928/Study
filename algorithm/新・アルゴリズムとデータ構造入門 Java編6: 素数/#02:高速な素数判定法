@@ -1,0 +1,38 @@
+import java.util.Scanner;
+
+// 整数 n が入力として与えられるので、素数ならば YES と、素数ではないならば NO と出力してください。
+
+// 입력 값
+// 2147483647
+
+// 출력 값
+// YES
+
+public class Main {
+    // 整数を受け取り、素数かどうかを判定する関数
+    static boolean primalityTest(long n) {
+        if (n == 1) {
+            return false;
+        }
+        for (long i = 2; i<= Math.sqrt(n) ; i++) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        long n = sc.nextLong();
+
+        boolean isPrime = primalityTest(n);
+
+        if (!isPrime) {
+            System.out.println("NO");
+        } else {
+            System.out.println("YES");
+        }
+    }
+}
