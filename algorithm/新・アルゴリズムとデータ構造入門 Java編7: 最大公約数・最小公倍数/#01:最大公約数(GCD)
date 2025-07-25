@@ -1,0 +1,57 @@
+import java.util.HashMap;
+
+public class Main {
+    // 整数を受け取り、素因数分解をおこなって (素因数、個数) の連想配列を返す関数
+    static HashMap<Integer, Integer> factorize(int n) {
+        HashMap<Integer, Integer> primes = new HashMap<>();
+
+        for (int i = 2; i * i <= n; i++) {
+            if (n % i > 0) {
+                continue;
+            }
+            int exp = 0;
+            while (n % i == 0) {
+                exp++;
+                n /= i;
+            }
+            primes.put(i, exp);
+        }
+
+        if (n != 1) {
+            primes.put(n, 1);
+        }
+
+        return primes;
+    }
+
+    static int calcGcd(int a, int b) {
+        HashMap<Integer, Integer> tableA = factorize(a);
+        HashMap<Integer, Integer> tableB = factorize(b);
+        HashMap<Integer, Integer> tableGcd = new HashMap<>();
+        
+        for(int prime : tableA.keySet()){
+            int exp = tableA.get(prime);
+            if(tableB.containsKey(prime)){
+                exp = Math.min(exp, tableB.get(prime));
+                tableGcd.put(prime, exp);
+            }
+        }
+        
+        int gcd = 1;
+        for(int factor : tableGcd.keySet()){
+             int exp = tableGcd.get(factor);
+             for(int i=0; i<exp; i++){
+                 gcd *= factor;
+             }
+        }
+        
+        return gcd;
+    }
+
+    public static void main(String[] args) {
+        int a = 30;
+        int b = 12;
+        int gcd = calcGcd(a, b);
+        System.out.println(a + " と " + b + " の最大公約数は " + gcd);
+    }
+}
