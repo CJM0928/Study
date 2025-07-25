@@ -1,0 +1,57 @@
+import java.util.HashMap;
+
+public class Main {
+    // 整数を受け取り、素因数分解をおこなって (素因数、個数) の連想配列を返す関数
+    static HashMap<Integer, Integer> factorize(int n) {
+        HashMap<Integer, Integer> primes = new HashMap<>();
+
+        for (int i = 2; i * i <= n; i++) {
+            if (n % i > 0) {
+                continue;
+            }
+            int exp = 0;
+            while (n % i == 0) {
+                exp++;
+                n /= i;
+            }
+            primes.put(i, exp);
+        }
+
+        if (n != 1) {
+            primes.put(n, 1);
+        }
+
+        return primes;
+    }
+
+    static int calcLcm(int a, int b) {
+        HashMap<Integer, Integer> tableA = factorize(a);
+        HashMap<Integer, Integer> tableB = factorize(b);
+        HashMap<Integer, Integer> tableLcm = tableA;
+        
+        for(int prime : tableB.keySet()){
+            int exp = tableB.get(prime);
+            if(tableA.containsKey(prime)){
+                exp = Math.max(exp, tableA.get(prime));
+            }
+            tableLcm.put(prime, exp);
+        }
+        
+        int lcm = 1;
+        for(int factor : tableLcm.keySet()){
+             int exp = tableLcm.get(factor);
+             for(int i=0; i<exp; i++){
+                 lcm *= factor;
+             }
+        }
+        
+        return lcm;
+    }
+
+    public static void main(String[] args) {
+        int a = 32;
+        int b = 12;
+        int lcm = calcLcm(a, b);
+        System.out.println(a + " と " + b + " の最小公倍数は " + lcm);
+    }
+}
