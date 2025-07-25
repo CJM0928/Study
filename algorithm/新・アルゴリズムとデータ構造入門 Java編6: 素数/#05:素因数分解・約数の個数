@@ -1,0 +1,62 @@
+import java.util.HashMap;
+
+public class Main {
+    // 整数を受け取り、素因数分解をおこなって (素因数、個数) の連想配列を返す関数
+    static HashMap<Integer, Integer> factorize(int n) {
+        HashMap<Integer, Integer> primes = new HashMap<>();
+
+        for (int i = 2; i * i <= n; i++) {
+            if (n % i > 0) {
+                continue;
+            }
+            int exp = 0;
+            while (n % i == 0) {
+                exp++;
+                n /= i;
+            }
+            primes.put(i, exp);
+        }
+
+        if (n != 1) {
+            primes.put(n, 1);
+        }
+
+        return primes;
+    }
+
+    // 약수의 개수를 계산하는 메서드
+    static int countDivisors(HashMap<Integer, Integer> factorTable) {
+        int result = 1;
+
+        // 어떤 수 n을 소인수분해하면 다음과 같은 형태
+        // n = p₁^e₁ × p₂^e₂ × ... × pₖ^eₖ
+        // 예시 1: n = 12
+        // 12 = 2^2 × 3^1
+        // (2 + 1) × (1 + 1) = 3 × 2 = 6
+        // → 실제 약수: 1, 2, 3, 4, 6, 12 → 6개
+        for (int exp : factorTable.values()) {
+        // (2 + 1) × (1 + 1) = 3 × 2 = 6
+            result *= (exp + 1);
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int n = 12;
+        HashMap<Integer, Integer> table = factorize(n);
+        // keySet() 을 통해 table의 key값을 들고옴
+        // prime : 2,3
+        // exp   : 2,1
+        
+        // 즉, 2는 2번, 3은 1번 출력
+        for(int prime : table.keySet()){
+            int exp = table.get(prime);
+            for(int i = 0; i < exp; i++){
+                System.out.println(prime);
+            }
+        }
+
+        int numDivisors = countDivisors(table);
+        System.out.println(n + "の約数の個数は " + numDivisors + " 個です");
+    }
+}
