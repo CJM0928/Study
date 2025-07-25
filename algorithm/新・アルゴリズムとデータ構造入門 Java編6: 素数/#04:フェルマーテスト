@@ -1,0 +1,43 @@
+public class Main {
+
+    // 整数 n が入力として与えられるので、フェルマーテストによる素数判定をおこない、素数と判定されたら YES と、素数ではないと判定されたら NO と出力してください。
+    // なお、パラメータ a の値は 2 で固定するものとします。
+    // 右側のコードエリアには、入力 n を受け取り、関数 fermatTest に渡してフェルマーテストによる素数判定をおこなうコードが用意されています。
+    // 関数 fermatTest のコードを書き加え、コードを完成させてください。
+
+    // 입력 치
+    // 837
+
+    // 출력 치
+    // NO
+
+    // 整数を受け取り、素数かどうかをフェルマーテストによって判定する関数
+    static boolean fermatTest(int n) {
+        int a = 2;
+        
+        if(n % a == 0){
+            return false;
+        }
+        
+        int fermat = 1;
+        
+        for(int i=0; i<n-1; i++){
+            fermat *=a;
+            fermat %=n;
+        }
+        
+        return fermat % n == 1;
+    }
+
+    public static void main(String[] args) {
+        // 341은 소수가 아니지만, 여기서는 소수라고 판별
+        // 이 알고리즘 자체가 100%정확도를 보장하지 않음.
+        int n = 17;                 
+        boolean isPrime = fermatTest(n);
+        if(isPrime){
+            System.out.println(n + "は素数");
+        }else{
+            System.out.println(n + "は素数ではない");
+        }
+    }
+}
