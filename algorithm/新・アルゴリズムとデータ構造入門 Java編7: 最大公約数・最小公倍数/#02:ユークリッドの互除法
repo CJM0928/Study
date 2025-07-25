@@ -1,0 +1,35 @@
+public class Main {
+
+    // static int calcGcd(int a, int b) {
+    //     if(b == 0){
+    //         return a;
+    //     } else {
+    //         return calcGcd(b, a % b);
+    //     }
+    // }
+    
+    // 유클리드 소거법
+    static int calcGcd(int[] a){
+        int gcd = a[0];
+        
+        for(int i=1; i< a.length; i++){
+            gcd = calcGcd(gcd, a[i]);
+        }
+        
+        return gcd;
+    }
+
+    public static void main(String[] args) {
+        // int a = 32;
+        // int b = 12;
+        // int gcd = calcGcd(a, b);
+        // System.out.println(a + " と " + b + " の最大公約数は " + gcd);
+
+        int[] a = {12, 30, 44};
+        int gcd = calcGcd(a);
+        for(int x : a){
+            System.out.print(x + " ");
+        }
+        System.out.println("の最大公約数は " + gcd);
+    }
+}
