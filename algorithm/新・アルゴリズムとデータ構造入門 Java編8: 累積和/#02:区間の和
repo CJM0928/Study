@@ -1,0 +1,48 @@
+整数 n と要素数 n の配列 a が与えられるので、この配列の累積和を半角スペース区切りで出力してください。
+今回考える累積和は、先頭 0 個の和を考慮するものとします。
+入力を受け取るコードと出力用の関数 printArray がすでに用意されているので、コードを書き足してプログラムを完成させてください。
+
+// 입력
+// 5
+// 1 2 3 4 5
+
+// 3 1 2
+// 10 11 12
+
+// 출력
+// 0 1 3 6 10 15
+
+// 23
+
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n, x, y;
+        n = sc.nextInt();               // 3
+        x = sc.nextInt();               // 1
+        y = sc.nextInt();               // 2
+        int[] a = new int[n];           // [3]
+        
+
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();        // 10 11 12
+        }
+
+        // 累積和を格納する長さ n+1 の配列 s を 0 で初期化
+        int[] s = new int[n+1];
+        // i を 0 から n-1 まで繰り返す
+        for(int i=0; i<n; i++){
+            // s[i+1] に s[i] + a[i] を代入
+            s[i+1] = s[i] + a[i];
+        }
+        
+        // s[y+1] - s[x] を出力
+        // s[2+1] - s[1] 
+        // 즉, 2,3번의 구간의 합을 구하기
+        System.out.println(s[y+1]-s[x]);
+    }
+}
+
