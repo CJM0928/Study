@@ -1,0 +1,39 @@
+import java.util.Arrays;
+
+// 右側のコードエリアには、関数 eratosthenes を用いて 1 以上 1,000 以下の全ての整数について素数判定をおこなうコードが用意されています。
+// 関数 eratosthenes のコードを書き加え、コードを完成させてください。
+
+// 입력 값
+// なし
+
+// 출력 값
+// なし
+public class Main {
+    static boolean[] eratosthenes(int n) {
+        boolean[] isPrime = new boolean[n + 1];
+        Arrays.fill(isPrime, true);
+        isPrime[0] = isPrime[1] = false;
+        
+        for(int i=2; i<=n; i++){
+            if(!isPrime[i]){
+                continue;
+            }
+            for(int j=i+i; j<=n; j+=i){
+                isPrime[j] = false;
+            }
+        }
+        return isPrime;
+    }
+
+    public static void main(String[] args) {
+        int n = 30;
+        boolean[] isPrime = eratosthenes(n);
+        for(int i = 1; i <= n; i++){
+            if(isPrime[i]){
+                System.out.println(i + "は素数");
+            }else{
+                System.out.println(i + "は素数ではない");
+            }
+        }
+    }
+}
