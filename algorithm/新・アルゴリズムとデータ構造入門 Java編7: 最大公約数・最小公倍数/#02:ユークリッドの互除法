@@ -1,18 +1,20 @@
 public class Main {
 
-    // static int calcGcd(int a, int b) {
-    //     if(b == 0){
-    //         return a;
-    //     } else {
-    //         return calcGcd(b, a % b);
-    //     }
-    // }
+    // b가 0이 될 때까지 재귀 호출
+    static int calcGcd(int a, int b) {
+         if(b == 0){
+             return a;
+         } else {
+             return calcGcd(b, a % b);
+         }
+    }
     
     // 유클리드 소거법
     static int calcGcd(int[] a){
         int gcd = a[0];
         
         for(int i=1; i< a.length; i++){
+            // 위의 메서드 호출
             gcd = calcGcd(gcd, a[i]);
         }
         
