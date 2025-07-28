@@ -1,0 +1,47 @@
+import java.util.Scanner;
+
+public class Main {
+    // 슬라이딩 윈도우 알고리즘
+    // n개의 입력값중, k개만큼의 부분합을 구하는 값들중에서 제일 큰 값을 구하는 알고리즘
+    // 整数 n, k と要素数 n の配列 a が与えられるので、この数列の連続する k 個の整数の和のうち最大のものを出力してください。
+    
+    // 입력
+    // 3 2
+    // 8 1 3
+
+    // 출력
+    // 9
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n, k;
+        n = sc.nextInt();                // 3
+        k = sc.nextInt();                // 2
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();         // 8 1 3 
+        }
+
+        // 累積和を格納する長さ n+1 の配列 s を 0 で初期化
+        int[] s = new int[n+1];
+        
+        // i を 0 から n-1 まで繰り返す
+        for(int i=0; i<n; i++){
+            // s[i+1] に s[i] + a[i] を代入
+            s[i+1] = s[i] + a[i];
+        }
+        // 暫定最大値を格納する変数 maxSum を 0 で初期化
+        int maxSum = 0;
+        
+        // i を 0 から n-k まで繰り返す
+        for(int i=0; i<n-k+1; i++){
+            // もし s[i+k]-s[i] が maxSum より大きければ
+            if(maxSum < s[i+k] -s[i]){
+                // maxSum を s[i+k]-s[i] で更新
+                maxSum = s[i+k] - s[i];
+            }
+        }
+        // maxSum を出力
+    System.out.println(maxSum);
+    }
+}
