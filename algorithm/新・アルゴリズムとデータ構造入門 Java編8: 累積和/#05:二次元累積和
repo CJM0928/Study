@@ -1,0 +1,52 @@
+import java.util.Scanner;
+
+public class Main {
+    // 整数 n, m と n×m の二次元配列 a が与えられるので、二次元累積和を出力してください。
+    // 今回考える累積和は、先頭 0 個の和を考慮するものとします（各行・各列の先頭の値は 0 になります）。
+
+    // 입력 값
+    // 3 3
+    // 0 0 2 2
+
+    // 8 0 0
+    // 0 1 0
+    // 0 0 3
+
+    // 출력 값
+    // 12
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n, m, x1, y1, x2, y2;
+        n = sc.nextInt();          // 3
+        m = sc.nextInt();          // 3
+        x1 = sc.nextInt();         // 0
+        y1 = sc.nextInt();         // 0
+        x2 = sc.nextInt();         // 2
+        y2 = sc.nextInt();         // 2
+        int[][] a = new int[n][m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                a[i][j] = sc.nextInt();
+            }
+        }
+
+        // 累積和をとる二次元配列 s を 0 で初期化
+        int[][] s = new int[n+1][m+1];
+        
+        // i が 0 から n-1まで、 j が 0 から m-1 までのループを回す
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                // s[i+1][j+1] = s[i+1][j] + s[i][j+1] - s[i][j] + a[i][j] とする
+                // s[i+1][j+1] =  (누적합 배열)
+                //  s[i+1][j]     (← 왼쪽 누적합)
+                // + s[i][j+1]    (↑ 위쪽 누적합)
+                // - s[i][j]      (↖ 중복된 부분 제거)
+                // + a[i][j];     (자기 자신의 값 추가) 
+                // s[x][y] 에서, x = 0 || y = 0 상황이라면 s[x][y]는 무조건 0이다.
+                s[i+1][j+1] = s[i+1][j] + s[i][j+1] -s[i][j] + a[i][j];
+            }
+        }
+        // s[x2+1][y2+1]-s[x2+1][y1]-s[x1][y2+1]+s[x1][y1] を出力
+        System.out.println(s[x2+1][y2+1] - s[x2+1][y1] - s[x1][y2+1] + s[x1][y1]);
+    }
+}
