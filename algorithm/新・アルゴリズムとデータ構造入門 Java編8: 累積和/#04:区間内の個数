@@ -1,0 +1,54 @@
+import java.util.Scanner;
+
+public class Main {
+    // 整数 n, x, y と長さ n の配列 a が与えられるので、a[x], a[x+1], ..., a[y] の区間内の偶数の個数と奇数の個数をこの順に改行区切りで出力してください。
+    // x부터 y까지의 짝수,전체,홀수 개수를 구하기
+    
+    // 입력값
+    // 10 2 8
+    // 0 1 2 3 4 5 6 7 8 9
+    
+    // 출력값
+    // 4
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n, x, y;
+        n = sc.nextInt();                   // 10
+        x = sc.nextInt();                   // 2
+        y = sc.nextInt();                   // 8
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();            // 0 1 2 3 4 5 6 7 8 9
+        }
+
+        // 長さ n の配列 b を用意
+        int[] b = new int[n];
+        // i を 0 から n-1 まで繰り返す
+        for(int i=0; i<n; i++){
+            // a[i] が偶数なら b[i] = 1, 奇数なら b[i] = 0 とする
+            if(a[i] % 2 == 0){
+                b[i] = 1;
+            } else {
+                b[i] = 0;
+            }
+        }
+        
+        // 累積和を格納する長さ n+1 の配列 s を 0 で初期化
+        int[] s = new int[n+1];
+        // i を 0 から n-1 まで繰り返す
+        for(int i=0; i<n; i++){
+            // s[i+1] に s[i] + b[i] を代入
+            s[i+1] = s[i] + b[i];
+        }
+
+        // 짝수 개수 출력
+        int even = s[y+1] - s[x];
+        System.out.println(even);
+        // 전체 개수 출력
+        int total = y - x + 1;
+        System.out.println(y - x + 1);
+        // 홀수 개수 출력
+        int odd = total - even;
+        System.out.println(odd);
+    }
+}
