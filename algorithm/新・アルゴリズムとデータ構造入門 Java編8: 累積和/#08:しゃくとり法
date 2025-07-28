@@ -1,0 +1,51 @@
+import java.util.Scanner;
+
+public class Main {
+
+    // "しゃくとり法（しゃくとりほう）", 
+    // 즉 투 포인터 알고리즘(Two Pointer Technique)
+
+    // 연속된 구간 (부분 배열) 에 대해 특정 조건을 만족하는 구간들을 효율적으로 탐색하는 방법
+    // 두 개의 포인터 i(왼쪽), r(오른쪽)을 사용하여 구간 [i, r) 또는 [i, r]을 조절함
+    // 조건을 만족할 때까지 오른쪽 포인터 r을 전진시키고, 조건을 만족하지 않거나 처리 후에는 왼쪽 포인터 i을 전진시킴
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n, k;
+        n = sc.nextInt();
+        k = sc.nextInt();
+
+        int[] a = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();
+        }
+
+        // 現在の右端を表す変数 r, 現在の総和を表す変数 sum, 答えを表す変数 count を 0 で初期化
+        int r = 0, sum = 0, count = 0;
+        
+        // 左端 i を 0 から n - 1 まで繰り返す
+        // 두 개의 포인터 i(왼쪽), r(오른쪽)을 사용
+        for(int i=0; i < n; i++){
+            // r が n より小さく、sum に a[r] を加えても k を超えない間
+            // 합이 k이 이하 인 경우,
+            while(r < n && sum + a[r] <=k){
+                // sum に a[r] を加えて右端 r を 1 ずつ増やす
+                sum += a[r];
+                r++;
+            }
+            // r - i を count に加える
+            count += r-i; 
+            // もし i が r と同じなら
+            if(i == r){
+                // r を 1 増やす
+                r++;
+            } else {// そうでなければ
+                // sum から a[i] を引く
+                sum -= a[i];
+            }
+        }
+        // count を出力
+        System.out.println(count);
+    }
+}
