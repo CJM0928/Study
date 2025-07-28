@@ -1,0 +1,61 @@
+import java.util.Scanner;
+
+public class Main {
+    // しゃくとり法 (투 포인터) 를 이용
+    // 합이 k 이하인 가장 긴 연속 부분 배열의 길이를 구하는 알고리즘
+
+    // 작동 방식 설명
+    // 변수	의미
+    // l 왼쪽 포인터
+    // r 오른쪽 포인터
+    // sum	현재 구간 [l, r)의 총합
+    // length	지금까지 찾은 가장 긴 구간의 길이
+
+    // 알고리즘 흐름:
+    // l을 0부터 시작하며, r을 오른쪽으로 이동시켜 sum + a[r] <= k일 때까지 확장
+    // 조건을 넘기면, 현재 길이 r - l이 가장 긴 길이인지 비교하고 length를 업데이트
+    // 이후 l을 오른쪽으로 한 칸 옮김
+    // 이 때 l == r이면 r도 같이 한 칸 옮김 (포인터 겹침 방지)
+    // 아니라면 sum에서 a[l]을 빼며 윈도우를 축소
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n, k;
+        n = sc.nextInt();           // 5
+        k = sc.nextInt();           // 3
+
+        int[] a = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();    // 8 1 1 1 3
+        }
+
+        // 現在の右端を表す変数 r, 現在の総和を表す変数 sum, 答えを表す変数 length を 0 で初期化
+        int r = 0, sum = 0, length = 0;
+        // 左端 l を 0 から n - 1 まで繰り返す
+        for(int l=0; l<n; l++){
+            // r が n より小さく、sum に a[r] を加えても k を超えない間
+            while(r < n && sum + a[r] <= k){
+                // sum に a[r] を加えて右端 r を 1 ずつ増やす
+                sum += a[r];
+                r++;
+            }
+            // もし r - l が length よりも大きければ
+            if(length < r - l){
+                // length を r - l で更新
+                length = r - l;
+            }
+            // もし l が r と同じなら
+            if(l == r){
+                // r を 1 増やす
+                r++;
+            } else { // そうでなければ
+                // sum から a[l] を引く
+                sum -= a[l];
+            }
+        }
+        
+        // length を出力
+        System.out.println(length);        // 3
+    }
+}
