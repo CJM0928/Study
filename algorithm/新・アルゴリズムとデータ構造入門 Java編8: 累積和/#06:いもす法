@@ -31,6 +31,7 @@ public class Main {
         a[r+1] -= x;
         
         // i を 0 から n-1 まで繰り返す
+        // 여기가 누적합 구간
         for(int i=1; i<n; i++){
             // a[i]に[i-1]を加算
             a[i] += a[i-1];
