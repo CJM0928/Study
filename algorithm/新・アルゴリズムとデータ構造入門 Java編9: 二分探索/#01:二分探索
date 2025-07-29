@@ -1,0 +1,53 @@
+import java.util.Scanner;
+
+public class Main {
+
+    // 整数 n, x と長さ n の昇順にソートされた配列 a が与えられるので、
+    // この配列に含まれる x の添字を出力してください。
+    // ただし、x が含まれていない場合は -1 を出力してください。
+
+    // 입력 값
+    // 3 1
+    // 1 3 8
+
+    // 출력 값
+    // YES
+    static boolean binarySearch(int n, int x, int[] a) {
+
+        // 変数 left, right をそれぞれ 0 と n - 1 で初期化
+        int left = 0, right = n-1;
+        // right が left 以上である間
+        while(left <= right){
+            // 変数 mid に (left + right) / 2 を代入
+            int mid = (left + right) / 2;
+            // もし a[mid] が x に等しいなら
+            if(a[mid] == x){
+                // true を返す
+                return true;
+                // もし a[mid] が x より大きいなら
+            } else if(a[mid] > x){
+                // right に mid - 1 を代入
+                right = mid -1;
+                // そうでなければ
+            } else {
+                // left に mid + 1 を代入
+                left = mid + 1;
+            }
+        }
+        // false を返す
+        return false;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+                                                    // n 개의 배열에서 x값 찾기기
+        int n = sc.nextInt(), x = sc.nextInt();     // 3 , 1
+
+        int[] a = new int[n];                       // 3
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();                    // 1 , 3 , 8
+        }
+
+        System.out.println(binarySearch(n, x, a) ? "Yes" : "No");
+    }
+}
