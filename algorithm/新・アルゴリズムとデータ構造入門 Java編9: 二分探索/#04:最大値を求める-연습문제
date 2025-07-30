@@ -11,6 +11,8 @@ import java.util.Scanner;
 
 // 즉, 이 문제의 의도는 
 // 파이프5개를 가지고 잘라봤는데 6개가 나올 때 최적의 값을 구하는 것
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -24,20 +26,19 @@ public class Main {
 
         // ここにコードを書く
         int left = 0, right =  10000;
-        for(int i =0; i<50; i++){
+        for(int loop = 0; loop < 50; loop++){
             int num = 0;
             
-            int mid = (left+right)/2;
+            int mid = (left+right)/2;      // 이 길이로 모든 막대를 잘라보자"라는 가정된 조각의 길이
             
-            for(int j=0; j<n; j++){
-                
-                num += a[j]/mid;
-                
-                if(num >= k){
-                    left = mid;
-                } else {
-                    right = mid;
-                }
+            for (int i = 0; i < n; i++) {
+                num += (int)(a[i] / mid);  // 전체 조각 수 합산
+            }
+            
+            if (num >= k) {   
+                left = mid;  // 더 긴 길이도 가능
+            } else {
+                right = mid; // 너무 길어서 조각 수 부족
             }
         }
         
