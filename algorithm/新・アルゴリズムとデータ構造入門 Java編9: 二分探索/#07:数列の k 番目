@@ -1,0 +1,95 @@
+import java.util.Scanner;
+import java.util.Arrays;
+
+  // n=6        a = [1,2,3,4,5,6]
+  // m=6        b = [1,2,3,4,5,6]
+  // k=7
+
+public class Main {
+    static int lowerBound(int[] a, int n, int x) {
+
+        int left = 0, right = n;
+
+        while (left != right) {
+            int mid = (left + right) / 2;
+
+            if (a[mid] >= x) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return left;
+    }
+
+    static int upperBound(int[] a, int n, int y) {
+
+        int left = 0, right = n;
+
+        while (left != right) {
+            int mid = (left + right) / 2;
+
+            if (a[mid] > y) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return left;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = sc.nextInt();
+        }
+
+        int m = sc.nextInt();
+
+        int[] b = new int[m];
+        for (int i = 0; i < m; i++) {
+            b[i] = sc.nextInt();
+        }
+
+        int k = sc.nextInt();
+
+        // 配列 b を昇順にソート
+        Arrays.sort(b);
+        // 変数 left, right をそれぞれ -1 と 2000000000 で初期化
+        int left = -1, right = 2000000000;
+        // left と right の差が 1 でない間
+        while(right - left != 1){
+            // 変数 mid に (left + right) / 2 を代入
+            int mid = (left + right) / 2;
+            
+            // 個数を表す変数 count を 0 で初期化   
+            int count = 0;
+            
+            // i を 0 から n - 1 まで繰り返す   
+            for(int i=0; i<n; i++){
+                // upperBound(b, m, a[i] + mid) - lowerBound(b, m, a[i] - mid) を count に加算
+                count += upperBound(b,m,a[i]+mid) - lowerBound(b,m,a[i] - mid);
+            }
+            
+            // もし count が k 以上なら            
+            if(count >= k){
+                
+                // right を mid で更新
+                right = mid;
+                
+            // そうでなければ
+            } else {
+                // left を mid で更新
+                left = mid;       
+            }
+        }
+        // right を出力
+        System.out.println(right);
+    }
+}
