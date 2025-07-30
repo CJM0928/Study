@@ -1,0 +1,74 @@
+import java.util.Scanner;
+import java.util.Arrays;
+import java.util.Collections;
+
+public class Main {
+
+    // 整数 n, k と長さ n の配列 w, v が与えられるので、
+    // 重さが w[0] から w[n-1], 価値が v[0] から v[n-1] までの n 個の財宝から k 個の財宝を選び、価値の合計を重さの合計で割った値である平均価値を最小化してください。
+    // 答えは小数点以下を切り捨てた整数で求めてください。
+    // すでに入力を行うコードが実装されているので、コードを書き足して完成させてください。
+
+    // 입력 값
+    // 3 2
+    // 1 2 3
+    // 4 3 2
+
+    // 기대 값
+    // 1
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt(), k = sc.nextInt();
+
+        int[] w = new int[n], v = new int[n];
+        for (int i = 0; i < n; i++) {
+            w[i] = sc.nextInt();
+        }
+        for (int i = 0; i < n; i++) {
+            v[i] = sc.nextInt();
+        }
+
+        // ここにコードを書く
+        // right 또한, 하드코딩하지말고 구하기
+        double left = 0, right = 0;
+
+        // (2) w[i], v[i] 를 읽은 직후에
+        //     모든 아이템의 v[i]/w[i] 중 최대를 찾고
+        //     여유를 주기 위해 +1.0
+        for (int i = 0; i < n; i++) {
+            right = Math.max(right, (double)v[i] / w[i]);
+        }
+        right += 1.0;
+        
+        for(int loop = 0; loop < 50; loop++){
+            double mid = (left + right) / 2;
+            
+            Double[] sum = new Double[n];
+            
+            for(int i = 0; i<n; i++){
+                sum[i] = v[i] - mid * w[i];
+            }
+            
+            
+            // 4) 오름차순 정렬 → 가장 작은 k개 골라야 최소평균
+            Arrays.sort(sum);
+
+            
+            double total = 0;
+            
+            for(int i=0; i<k; i++){
+                total += sum[i];
+            }
+            
+            if (total >= 0) {
+                // 가능하면 더 큰 x(=mid) 쪽으로 올려 본다
+                left = mid;
+            } else {
+                // mid가 최소평균보다 크니까 줄인다
+                right = mid;
+            }
+        }
+        System.out.println((int)Math.floor(right));
+    }
+}
