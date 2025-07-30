@@ -1,0 +1,77 @@
+import java.util.Scanner;
+import java.util.Arrays;
+import java.util.Collections;
+
+// 입력 값
+// 3 2
+// 1 2 3
+// 3 2 1
+
+// 출력 값
+// 1.6666666666633407
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();                   // 3
+        int k = sc.nextInt();                   // 2
+
+        int[] w = new int[n], v = new int[n];
+        for (int i = 0; i < n; i++) {
+            w[i] = sc.nextInt();                // 1 2 3
+        }
+        for (int i = 0; i < n; i++) {
+            v[i] = sc.nextInt();                // 3 2 1
+        }
+
+        // 変数 left, right をそれぞれ 0 と 5001 で初期化
+        double left = 0, right = 5001;
+        
+        // 50 回繰り返すループを作成 소수를 구하는거기때문에 50회
+        for(int loops = 0; loops < 50; loops++){
+            // 変数 mid に (left + right) / 2 を代入
+            double mid = (left+right) / 2;
+            
+            // 長さ n の配列 tmp を作成
+            Double[] tmp = new Double[n];
+            
+            // i を 0 から n - 1 まで繰り返す
+            for(int i=0; i<n; i++){
+                
+                // tmp[i] に v[i] - mid * w[i] を代入
+                tmp[i] = v[i] - mid * w[i];
+            }
+        
+
+            // tmp を大きい順にソート
+            // 큰걸 골라야 하므로 내림차순 정렬
+            Arrays.sort(tmp, Collections.reverseOrder());
+            
+            // 変数 sum を 0 で初期化
+            double sum = 0;
+        
+            // i を 0 から k - 1 まで繰り返す
+            for(int i=0; i<k; i++){
+                // sum に tmp[i] を足す
+                sum += tmp[i];   
+            }
+    
+            // もし sum が 0 以上なら
+            if(sum >= 0){
+                // left を mid で更新
+                left = mid;   
+                
+            // そうでなければ
+            } else {
+                
+                // right を mid で更新   
+                right = mid;
+            }
+        }
+
+        // left を出力
+        System.out.println(left);
+    }
+}
