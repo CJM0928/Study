@@ -1,0 +1,38 @@
+import java.util.*;
+
+public class Main{
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        char[] arr = new char[256];      // 配列本体
+        int arr_size = 0;   // 配列に入っている要素数
+
+        int q = sc.nextInt();            // query 의 횟수
+
+        for (int i = 0; i < q; i++) {
+            int query = sc.nextInt();
+            if (query == 1) {
+                // 1 の処理をここに書く
+                char x = sc.next().charAt(0);
+                arr[arr_size] = x;
+                arr_size++;
+            } else if (query == 2) {
+                // 2 の処理をここに書く
+                int x = sc.nextInt();
+                int y = sc.nextInt();
+                x--;
+                y--;
+                char tmp = arr[x];
+                arr[x] = arr[y];
+                arr[y] = tmp;
+            }
+            
+        }
+        for (int j = 0; j < arr_size; j++) {
+            System.out.println(arr[j]);
+        }
+
+        sc.close();
+    }
+}
