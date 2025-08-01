@@ -1,0 +1,41 @@
+import java.util.*;
+// 입력 예 : 1 2 3 2 5 3 3 10 2
+
+// 출력 예 
+// No
+// No
+// Yes
+// No
+// Yes
+// Yes
+// No
+// Yes
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt();
+
+        int[] A = new int[N];
+        for (int i = 0; i < N; i++) {
+            A[i] = sc.nextInt();
+        }
+
+        Set<Integer> seen = new HashSet<>();
+
+        for (int i = 0; i < N; i++) {
+            if (i == 0) {
+                seen.add(A[i]); // 첫 번째는 비교할 대상이 없음
+                continue;
+            }
+
+            if (seen.contains(A[i])) {
+                System.out.println("Yes");
+            } else {
+                System.out.println("No");
+            }
+
+            seen.add(A[i]); // 항상 추가
+        }
+    }
+}
