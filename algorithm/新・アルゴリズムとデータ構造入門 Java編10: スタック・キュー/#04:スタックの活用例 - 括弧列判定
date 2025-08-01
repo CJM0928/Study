@@ -1,0 +1,72 @@
+import java.util.*;
+
+// N 文字の 括弧列 S が与えられます。与えられた 括弧列 が 正しい括弧列 かどうか判定してください。
+
+// ここで、 括弧列 とは以下のように定義します。
+
+// * ( または ) または空文字のみで構成される文字列
+
+// また、 正しい括弧列 とは以下のように定義します。
+
+// 1. 空文字列は正しい括弧列である。
+// 2. 文字列 s が正しい括弧列であるとき、 ( + s + ) は正しい括弧列である。
+// 3. 文字列 s , t が正しい括弧列であるとき、 s + t は正しい括弧列である。
+
+// たとえば、以下の文字列はすべて 正しい 括弧列です。
+
+
+// ()
+// (())
+// ()()
+// (()())
+// ((((())())()))
+
+
+// また、以下の文字列はすべて 正しくない 括弧列です。
+
+// )(
+// (
+// ())
+// ((())
+// (()()))((()())()
+
+// 入力される値
+// 3
+// (()
+
+// 期待する出力値
+// No
+
+public class Main{
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        String s = sc.next();
+
+        Deque<Character> stack = new ArrayDeque<Character>();
+
+        // 이 문제에서 '('을 push하는 이유 : 결국 아무것도 삭제 못하니까 쓰레기만 쌓이는걸로 표현
+        for (int i = 0; i < n; i++) {
+            //ここに括弧列判定のコードを書く
+            if(s.charAt(i) == '('){
+                stack.push(s.charAt(i));
+            }else       // equals(')')
+            {
+                if(stack.size() > 0 && stack.peek() == ')'){
+                    stack.pop();
+                } else {
+                    stack.push(')');
+                }
+            }
+        }
+        if (stack.isEmpty()) {
+            System.out.println("Yes");
+        } else {
+            System.out.println("No");
+        }
+        sc.close();
+    }
+}
