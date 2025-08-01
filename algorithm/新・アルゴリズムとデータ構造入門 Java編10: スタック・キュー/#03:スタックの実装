@@ -22,6 +22,8 @@ import java.util.*;
 // d
 // d
 
+import java.util.*;
+
 public class Main{
     public static void main(String[] args) {
 
@@ -37,10 +39,10 @@ public class Main{
             if (query == 1) {
                 // PUSH の処理をここに書く
                 char x = sc.next().charAt(0);
-                System.out.println(x);
                 stack[stack_size++] = x;
             } else if (query == 2) {
                 // POP の処理をここに書く
+                System.out.println(stack[stack_size-1]);
                 stack_size--;
             }
             for (int j = 0; j < stack_size; j++) {
