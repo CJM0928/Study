@@ -1,0 +1,47 @@
+// 코드 개요: 에스컬레이터 시뮬레이션
+// 가정된 조건
+// 에스컬레이터는 한 번 타면 length = 5초 동안 탑승
+
+// 시간 단위(time = 1~9) 로 반복
+
+// 특정 시간에 사람이 타고, 5초 후 자동으로 내림
+
+// 큐(Queue<Integer>)에는 매 시간마다 탑승한 사람 수가 들어감
+
+
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        int length = 5;
+        
+        Queue<Integer> que = new ArrayDeque<>();
+        
+        int next_person = 0;
+        int person_on_escalator = 0;
+        
+        for(int time = 1; time < 10; time++){
+            if(time == 1){
+                que.add(2);
+                person_on_escalator += 2;
+            } else if (time == 3){
+                que.add(5);
+                person_on_escalator += 5;
+            } else if (time == 7){
+                que.add(2);
+                person_on_escalator += 2;
+            } else {
+                que.add(0);
+            }
+            
+            if(que.size() > length){
+                person_on_escalator -= que.poll();
+            }
+            System.out.println(person_on_escalator);
+        }
+        sc.close();
+    }
+}
