@@ -1,0 +1,56 @@
+import java.util.*;
+
+// Q 個のクエリが与えられます。空の配列 A を用意したあと、 Q 個のクエリに応じて以下の 2 種類の処理をしてください。
+
+// ・ PUSH X: 配列 A の末尾に 文字 X を追加
+// ・ POP: 配列 A の末尾にある要素を出力し、削除
+
+// 各クエリの処理が終わったあと、配列 A の各要素の値を半角スペース区切りで出力してください。
+// A が空の場合は要素を出力する代わりに改行のみを出力してください。
+
+// 입력 값
+// 4
+// 1 c
+// 2
+// 1 d
+// 2
+
+// 출력 값
+// c
+// c
+// 
+// d
+// d
+
+public class Main{
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        char[] stack = new char[256];      // スタック本体
+        int stack_size = 0;   // スタックに入っている要素数
+
+        int q = sc.nextInt();
+
+        for (int i = 0; i < q; i++) {
+            int query = sc.nextInt();
+            if (query == 1) {
+                // PUSH の処理をここに書く
+                char x = sc.next().charAt(0);
+                System.out.println(x);
+                stack[stack_size++] = x;
+            } else if (query == 2) {
+                // POP の処理をここに書く
+                stack_size--;
+            }
+            for (int j = 0; j < stack_size; j++) {
+                if (j > 0) {
+                    System.out.print(" ");
+                }
+                System.out.print(stack[j]);
+            }
+            System.out.println("");
+        }
+        sc.close();
+    }
+}
