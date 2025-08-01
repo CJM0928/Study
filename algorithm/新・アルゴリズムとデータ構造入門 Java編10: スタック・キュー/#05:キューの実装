@@ -1,0 +1,30 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        char[] queue = new char[256];       // 큐는 선입 선출
+        int queue_front = 0;                // 앞자리
+        int queue_end = 0;                  // 뒷자리
+        
+        int q = sc.nextInt();
+        
+        for(int i=0; i<q; i++){
+            int query = sc.nextInt();
+            if(query == 1){
+                char x = sc.next().charAt(0);
+                queue[queue_end] = x;
+                queue_end++;
+            } else if(query == 2){
+                System.out.println("삭제 : " + queue[queue_front]);
+                queue_front++;
+            }
+        }
+        for(int j=queue_front; j<=queue_end; j++){
+            System.out.println("리스트 출력 : " + queue[j]);
+        }
+        
+        sc.close();
+    }
+}
