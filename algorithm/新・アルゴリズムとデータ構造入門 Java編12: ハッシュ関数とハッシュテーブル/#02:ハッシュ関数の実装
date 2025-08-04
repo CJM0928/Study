@@ -1,0 +1,20 @@
+import java.util.*;
+
+public class Main {
+    
+    static int H(int x, int mod){
+        return x % mod;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        int n = sc.nextInt();                 // 5
+        int mod = sc.nextInt();               // 7
+        
+        for(int i=0; i<n; i++){
+            int x = sc.nextInt();             // 3 9 12 15 17
+            System.out.println(H(x,mod));     // 3 2 5  1  3
+        }
+    }
+}
