@@ -1,0 +1,80 @@
+import java.util.Scanner;
+
+class Node {
+    // Node クラスに値を表す変数 value を用意
+    int value;
+    // Node クラスに次のノードへの参照を表す変数 next を用意
+    Node next;
+    // Node クラスに前のノードへの参照を表す変数 prev を用意
+    Node prev;
+    // Node クラスに、値を受け取って初期化する関数を用意
+    Node(int value){
+        // 受け取った値を変数 value に代入
+        this.value = value;
+        
+    }
+}
+
+
+class List {
+    // List クラスに、ダミーノードを表すノード dummy を用意
+    Node dummy;
+    // List クラスに、ダミーノード 1 つでリストを初期化する関数を用意
+    List(){
+        // ダミーノードを変数 dummy に代入
+        dummy = new Node(-1);
+        // ダミーノードの次のノードをダミーノードに設定
+        dummy.next = dummy;
+        // ダミーノードの前のノードをダミーノードに設定
+        dummy.prev = dummy;
+    }
+
+    void print() {
+        for (Node x = dummy.next; x != dummy; x = x.next) {
+            System.out.print(x.value + " ");
+        }
+        System.out.println();
+    }
+
+    Node find(int value) {
+        for (Node x = dummy.next; x != dummy; x = x.next) {
+            if (x.value == value) {
+                return x;
+            }
+        }
+        return dummy;
+    }
+}
+
+
+public class Main {
+
+    public static void main(String[] args) {
+        // List クラスの変数 list を用意
+        List list = new List();
+        // 1, 2, 3 を要素にとるノードを作成
+        Node node1 = new Node(1);
+        Node node2 = new Node(2);
+        Node node3 = new Node(3);
+        // 順番に参照をつなぐ
+        list.dummy.next = node1;
+        node1.next = node2;
+        node2.next = node3;
+        node3.next = list.dummy;
+        // 逆方向にも参照をつなぐ
+        list.dummy.prev = node3;
+        node3.prev = node2;
+        node2.prev = node1;
+        node1.prev = list.dummy;
+        // リストを出力
+        list.print();
+        // ダミーノードを出力
+        System.out.println(list.dummy.value);
+        // その前のノードを順番に出力
+        System.out.println(list.dummy.prev.value);
+        System.out.println(list.dummy.prev.prev.value);
+        System.out.println(list.dummy.prev.prev.prev.value);
+        System.out.println(list.dummy.prev.prev.prev.prev.value);
+        System.out.println(list.dummy.prev.prev.prev.prev.prev.value);
+    }
+}
