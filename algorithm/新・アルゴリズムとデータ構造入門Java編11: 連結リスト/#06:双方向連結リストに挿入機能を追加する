@@ -1,0 +1,84 @@
+import java.util.Scanner;
+
+class Node {
+    int value;
+    Node next;
+    Node prev;
+
+    Node(int value) {
+        this.value = value;
+    }
+}
+
+
+class List {
+    Node dummy;
+
+    List() {
+        dummy = new Node(-1);
+        dummy.next = dummy;
+        dummy.prev = dummy;
+    }
+
+    void print() {
+        for (Node x = dummy.next; x != dummy; x = x.next) {
+            System.out.print(x.value + " ");
+        }
+        System.out.println();
+    }
+
+    void printReverse() {
+        for (Node x = dummy.prev; x != dummy; x = x.prev) {
+            System.out.print(x.value + " ");
+        }
+        System.out.println();
+    }
+
+    Node find(int value) {
+        for (Node x = dummy.next; x != dummy; x = x.next) {
+            if (x.value == value) {
+                return x;
+            }
+        }
+        return dummy;
+    }
+
+    x - newNode - x.next
+
+    순서이므로, newNode의 위치는 노드x를 이용해서 정한다.
+    Node insertAfter(Node x, int value) {
+        // value を値にもつ新しいノード newNode を作成
+        Node newNode = new Node(value);
+        // x の次のノードの prev を newNode に更新
+        x.next.prev = newNode;
+        // newNode の next を x の次のノードに更新
+        newNode.next = x.next;
+        // newNode の prev を x に更新
+        newNode.prev = x;
+        // x の next を newNode に更新
+        x.next = newNode;
+        // newNode を返す
+        return newNode;
+        
+    }
+}
+
+
+public class Main {
+
+    public static void main(String[] args) {
+        // 新しいリストを作成
+        List list = new List();
+        // 値 1 をもつノードを挿入
+        Node node1 = list.insertAfter(list.dummy, 1);
+        // 値 2 をもつノードを挿入
+        Node node2 = list.insertAfter(node1, 2);
+        // 値 3 をもつノードを挿入
+        Node node3 = list.insertAfter(node2, 3);
+
+        // リストを出力
+        list.print();
+        // 逆向きにも出力
+        list.printReverse();
+    }
+}
