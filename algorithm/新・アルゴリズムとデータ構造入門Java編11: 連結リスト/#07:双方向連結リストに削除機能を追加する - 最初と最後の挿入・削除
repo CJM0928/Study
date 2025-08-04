@@ -1,0 +1,116 @@
+import java.util.Scanner;
+
+class Node {
+	int value;
+	Node next;
+	Node prev;
+
+	Node(int value) {
+		this.value = value;
+	}
+}
+
+
+class List {
+	Node dummy;
+
+	List() {
+		dummy = new Node(-1);
+		dummy.next = dummy;
+		dummy.prev = dummy;
+	}
+
+	void print() {
+		for (Node x = dummy.next; x != dummy; x = x.next) {
+			System.out.print(x.value + " ");
+		}
+		System.out.println();
+	}
+
+	void printReverse() {
+		for (Node x = dummy.prev; x != dummy; x = x.prev) {
+			System.out.print(x.value + " ");
+		}
+		System.out.println();
+	}
+
+	Node find(int value) {
+		for (Node x = dummy.next; x != dummy; x = x.next) {
+			if (x.value == value) {
+				return x;
+			}
+		}
+		return dummy;
+	}
+
+	Node insertAfter(Node x, int value) {
+		Node newNode = new Node(value);
+		x.next.prev = newNode;
+		newNode.next = x.next;
+		newNode.prev = x;
+		x.next = newNode;
+		return newNode;
+	}
+
+	Node insertBefore(Node x, int value) {
+		Node newNode = new Node(value);
+		x.prev.next = newNode;
+		newNode.prev = x.prev;
+		newNode.next = x;
+		x.prev = newNode;
+		return newNode;
+	}
+
+	void erase(Node x) {
+		if (x == dummy) {
+			throw new RuntimeException("ダミーノードは削除できません");
+		}
+		x.next.prev = x.prev;
+		x.prev.next = x.next;
+	}
+
+	Node pushFront(int value) {
+		return insertAfter(dummy, value);
+	}
+
+	Node pushBack(int value) {
+		return insertBefore(dummy, value);
+	}
+
+	void popFront() {
+		erase(dummy.next);
+	}
+
+	void popBack() {
+		erase(dummy.prev);
+	}
+}
+
+
+public class Main {
+
+	public static void main(String[] args) {
+		List list = new List();
+		Node node1 = list.pushBack(1);
+		Node node2 = list.pushBack(2);
+		Node node3 = list.pushBack(3);
+
+		list.print();
+		list.printReverse();
+
+		list.popBack();
+
+		list.print();
+		list.printReverse();
+
+		list.pushFront(0);
+
+		list.print();
+		list.printReverse();
+
+		list.popFront();
+
+		list.print();
+		list.printReverse();
+	}
+}
