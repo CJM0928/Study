@@ -1,0 +1,65 @@
+import java.util.Scanner;
+
+class Node {
+    int value;
+    Node next;
+
+    Node(int value) {
+        this.value = value;
+    }
+}
+
+
+class List {
+    Node dummy;
+
+    List() {
+        dummy = new Node(-1);
+        dummy.next = dummy;
+    }
+
+    void print() {
+        for (Node x = dummy.next; x != dummy; x = x.next) {
+            System.out.print(x.value + " ");
+        }
+        System.out.println();
+    }
+
+    Node insertAfter(Node x, int value) {
+        Node newNode = new Node(value);
+        newNode.next = x.next;
+        x.next = newNode;
+        return newNode;
+    }
+
+    // 노드 삭제 메서드
+    void eraseAfter(Node x) {
+        // x の次のノードがダミーノードなら
+        if(x.next == dummy){
+            // エラーを出力
+            throw new RuntimeException("ダミーノードは削除できません。")
+        }
+        // x の next を x の次のノードの next に更新
+        x.next = x.next.next;
+    }
+}
+
+
+public class Main {
+
+    public static void main(String[] args) {
+        List list = new List();
+        Node node1 = list.insertAfter(list.dummy, 1);
+        Node node2 = list.insertAfter(node1, 2);
+        Node node3 = list.insertAfter(node2, 3);
+
+        list.print();
+
+        // node1 の次のノードを削除
+        list.eraseAfter(node1);
+        // リストを出力
+        list.print();
+        // node3 の次のノードを削除 (エラー)
+        list.eraseAfter(node3);
+    }
+}
