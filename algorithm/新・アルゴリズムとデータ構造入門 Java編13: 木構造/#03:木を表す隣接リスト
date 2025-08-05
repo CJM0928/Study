@@ -1,0 +1,76 @@
+import java.util.*;
+
+// 트리 또는 무방향 그래프의 인접 리스트(Adjacency List) 구조
+// 노드 수 N과 간선 N-1개의 정보를 받아서,
+// 각 노드의 인접 노드를 오름차순으로 출력하는 Java 프로그램
+
+// 입력 값
+// 2
+// 1 2
+
+// 10
+// 1 2
+// 2 3
+// 3 4
+// 4 5
+// 6 5
+// 7 6
+// 8 7
+// 9 8
+// 10 9
+
+// 출력 값
+// 2
+// 1
+
+// 2
+// 1 3
+// 2 4
+// 3 5
+// 4 6
+// 5 7
+// 6 8
+// 7 9
+// 8 10
+// 9
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        // 접점의 값
+        int N = sc.nextInt();
+        
+        //  아직 존재하지 않는 인접리스트의 작성
+        ArrayList<ArrayList<Integer>> g = new ArrayList<>();
+        for(int i = 0; i < N; i++){
+            g.add(new ArrayList<>());
+        }
+        
+        // 근처 값만을 루프해서 입력
+        for(int i=0; i<N-1; i++){
+            int a = sc.nextInt() -1;
+            int b = sc.nextInt() -1;
+            
+            // 접점a와접점b를 잇는 인접리스트 추가
+            g.get(a).add(b);
+            g.get(b).add(a);
+        }
+        
+        // 인접리스트의 출력
+        for(int i=0; i<N; i++){
+
+            // 출력할 값을 오름차순으로 정렬
+            Collections.sort(g.get(i));
+
+            for(int j =0; j<g.get(i).size(); j++){
+                System.out.print(g.get(i).get(j) + 1);
+                if(j != g.get(i).size() -1){
+                    System.out.print(" ");
+                }
+            }
+            System.out.println();
+        }
+    }
+}
