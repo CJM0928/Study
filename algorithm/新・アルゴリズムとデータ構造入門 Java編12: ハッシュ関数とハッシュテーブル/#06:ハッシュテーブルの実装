@@ -1,0 +1,41 @@
+import java.util.*;
+
+// 해쉬 테이블은 해쉬 함수와, 배열을 이용한다.
+public class Main {
+
+    //해쉬 함수  
+    static int H(int x){
+        return x % 10;
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        // 해쉬테이블의 초기화
+        var table = new ArrayList<Integer>();
+        for(int i=0; i<10; i++){
+            table.add(-1);
+        }
+        
+        int n = sc.nextInt();
+        
+        for(int i = 0; i<n; i++){
+            int x = sc.nextInt();
+            
+            int hash = H(x);
+            
+            // 데이터 추가
+            // hash 번호로 x값을 보관
+            table.set(hash,x);
+        }
+        
+        // 데이터 검색
+        int y = 188;
+        // hash 번호(y = 188)로 x값을 출력
+        System.out.println(table.get(H(y)));
+        
+        // 만약 hash 번호(z = 55)가 없는 x값을
+        // get 하려고 시도한다면 table은 '-1' 을 출력함
+        int z = 55;
+        System.out.println(table.get(H(z)));
+    }
+}
