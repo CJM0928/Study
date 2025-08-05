@@ -1,0 +1,52 @@
+import java.util.*;
+
+// 루트를 가진 트리(rooted tree)에서 각 노드의 부모 정보를 기록하고 출력
+// N개의 노드가 있는 트리에서
+// 각 노드의 부모 노드를 추적하여 출력하는 프로그램
+
+// 입력 값
+// 6
+// 3 1
+// 3 2
+// 3 4
+// 1 5
+// 1 6
+
+// 출력 값
+// parent : 3, chile : 1
+// parent : 3, chile : 2
+// parent : 3, chile : 3
+// parent : 3, chile : 4
+// parent : 1, chile : 5
+// parent : 1, chile : 6
+
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        // 접점의 값
+        int N = sc.nextInt();
+        
+        // 루트를 가진 트리에 대응하는 배열
+        int[] tree = new int[N];
+        
+        // 초기값은 자기자신에게 지정
+        for(int i=0; i<N; i++){
+            tree[i] = i;
+        }
+        
+        // 주변 값을 루프해서 입력
+        for(int i=0; i<N-1; i++){
+            int a = sc.nextInt() -1;
+            int b = sc.nextInt() -1;
+            
+            //접점 b의 부모가 a라고한다.
+            tree[b] = a;
+        }
+        
+        // 루트값이 있는 트리에 대응하는 배열의 내용을 출력
+        for(int i=0; i<N; i++){
+            System.out.println("parent : %d, chile : %d".formatted(tree[i] + 1 , i + 1));
+        }
+    }
+}
