@@ -26,6 +26,13 @@ public class Main {
         // }
         
         // 더 나은 방법 (이 한줄로 해결 가능)
-        System.out.println(a & b);
+        System.out.println(a & b);              // and  연산
+        System.out.println(a | b);              // or 연산
+        System.out.println(a == 0 ? 1 : 0);     // a가 1이면 0을, 0이면 1을 출력 -> 삼항연산자
+        System.out.println(~a);                 // not 연산 
+        System.out.println(a ^ b);              // xor(배타적 논리합) 연산
+        System.out.println((a & b) ^ 1);        // NAND = NOT (a & b) -->  NAND는 AND의 결과를 NOT으로 뒤집은 것
+        System.out.println((a | b) ^ 1);        // A NOR B = NOT (A OR B) --> OR 연산의 결과를 NOT으로 뒤집은 것
+        System.out.println((a ^ b) ^ 1);        // XNOR (배타적 논리합의 부정) 연산 --> nor연산 결과를 NOT으로 뒤집은 것
     }
 }
