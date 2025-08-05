@@ -1,0 +1,35 @@
+import java.util.*;
+
+public class Main {
+    
+    public static void main(String... args) {
+        
+        var sc = new Scanner(System.in);
+        
+        var a = sc.nextInt();
+        var b = sc.nextInt();
+        var c = sc.nextInt();
+        var d = sc.nextInt();
+
+        // 1. 問題の式をそのまま実装
+        // System.out.println((~((~a & ~b) | ~c) ^ d) & 0b1);
+        
+        // 2. ド・モルガンの法則
+        // 드모르간의 법칙 (De Morgan's Law) 은 논리 연산의 부정(반대)을 다룰 때 자주 쓰이는 논리 변형 법칙
+        // 사칙연산에서 괄호 앞에 '-'가 붙는것을 생각하면 좋다. "-(a + b) = c 가 -a -b = c" 가 되듯이 말이다.
+        // 예시 
+        // int a = 1;           // 00000001
+        // int b = 0;           // 00000000
+
+        // System.out.println(~(a & b));   // -1  (왜냐면 a & b = 0 → ~0 = -1)
+        // System.out.println(~a | ~b);    // -1  (같은 결과)
+
+        // boolean a = true;
+        // boolean b = false;
+
+        // System.out.println(!(a && b));     // true
+        // System.out.println(!a || !b);      // true → 같은 결과
+
+        System.out.println((((a | b) & c) ^ d) & 0b1);
+    }
+}
