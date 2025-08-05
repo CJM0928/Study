@@ -35,3 +35,17 @@
 
     C#에서 var, const는 "타입"이 아니라 "선언 방식"
     C#에도 프리미티브 타입(기본형)과 비프리미티브 타입(참조형) 구분있으며, 위의 키워드 3가지를 제외하면 JAVA와 동일하다.
+
+
+Java vs C# 이름 규칙 요약
+
+    요소	            Java 스타일 (CamelCase)	        C# 스타일 (PascalCase)
+    클래스 이름	            MyClass	                      MyClass               (동일)
+    메서드 이름	            printLine()	                  PrintLine                  ()
+    변수 이름	          myValue, playerName	        myValue, playerName         (동일)
+    속성 이름(Property)	     getAge()	                  Age                       (속성 자체를 대문자)
+    상수/enum	          MAX_VALUE (대문자 + _)	      MaxValue, MyEnum.Value    
+    지역 변수/필드	      count, randomNumber	          count, randomNumber       (동일)
+    인터페이스	          Runnable	                    IEnumerable             (I로 시작)
+
+-> 정리하면, 자바는 카멜표기법으로, 메서드가 소문자로 시작한다면, C#은 파스칼 표기법으로 메서드가 대문자로 시작된다.
