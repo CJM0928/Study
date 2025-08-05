@@ -1,0 +1,38 @@
+import java.util.*;
+
+// Full Adder의 개념 설명 (주석용)
+/* Full Adder(전가산기)는 다음 3개의 입력을 받아 덧셈을 수행
+A : 첫 번째 입력 비트
+B : 두 번째 입력 비트
+Cin : 이전 자리에서 올라온 자리올림(Carry-in)
+
+출력은 다음 2개:
+Sum(S) : A + B + Cin의 합의 1의 자리 값 (출력 합)
+Carry-out(Cout) : A + B + Cin의 합의 2의 자리 값 (다음 자리로의 자리올림)
+
+비트 연산으로 나타내면:
+Sum = A ^ B ^ Cin // XOR 세 번
+Cout = (A & B) | (B & Cin) | (A & Cin) // 자리올림 발생 조건들 OR 결합
+
+예시:
+A = 1, B = 1, Cin = 1
+A + B + Cin = 3 (2진수 11)
+→ Sum = 1, Carry-out = 1
+*/
+
+public class Main {
+    public static void main(String[] args) {
+        // 自分の得意な言語で
+        // Let's チャレンジ！！
+        Scanner sc = new Scanner(System.in);
+        int a = sc.nextInt();
+        int b = sc.nextInt();
+        int c1 = sc.nextInt();
+        
+        int s = a ^ b ^ c1;                                 // 세 비트의 합에서 1의 자리만 가져옴 (XOR 세 번)
+        int c2 = (a & b) | (b & c1) | (c1 & a);             // 세 개 중 두 개 이상이 1일 경우 자리올림 발생
+                                                            // Full Adder의 대표적인 자리올림(Carry-out) 계산식
+        
+        System.out.println(c2 + " " + s);
+    }
+}
