@@ -1,0 +1,31 @@
+import java.util.*;
+
+// 0 または 1 の整数 A と B が与えられます。 A AND B の結果を出力してください。
+// ここで、 AND 演算とは、以下の表にしたがって算出する論理演算のことを指します。
+
+// A B
+
+// 入力値最終行の末尾に改行が１つ入ります。
+// 文字列は標準入力から渡されます。
+// 期待する出力
+// A AND B の結果を 0 または 1 で出力してください。末尾に改行を入れ、余計な文字、空行を含んではいけません。
+
+public class Main {
+    public static void main(String[] args) {
+        // 自分の得意な言語で
+        // Let's チャレンジ！！
+        Scanner sc = new Scanner(System.in);
+        int a = sc.nextInt();
+        int b = sc.nextInt();
+        
+        // 비효율적인 if
+        // if (a == 1 && b == 1) {
+        //   System.out.println(1);
+        // }else {
+        //   System.out.println(0);
+        // }
+        
+        // 더 나은 방법 (이 한줄로 해결 가능)
+        System.out.println(a & b);
+    }
+}
