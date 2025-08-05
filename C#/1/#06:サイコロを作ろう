@@ -1,0 +1,16 @@
+// 数の表示とサイコロ
+using System;
+public class Program{
+    public static void Main(){
+        
+        // 클래스의 인스턴스 화(Random 클래스)
+        var random = new Random();
+
+        // Next() 메서드를보면, 대문자인데 카멜표기법인 Java와 다르게, Pascal표기법인 C#의 특징이다.
+        var number = random.Next();         // 범위 제한 없음
+        var number = random.Next(1,101);    // 1~101 까지
+        
+        Console.WriteLine("スライムが" + number + "匹現れた");
+    
+    }
+}
