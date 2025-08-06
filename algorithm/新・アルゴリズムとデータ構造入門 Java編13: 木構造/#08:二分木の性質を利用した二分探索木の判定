@@ -1,0 +1,103 @@
+    // 이 문제는 이진탐색트리가 유효한지 안한지 확인하는 방법
+    //        부모(0)
+    //        /    |
+    //    오른쪽(1)  왼쪽(2)
+    // 괄호안에 이런 트리 값(순서)을 유지해야하는데, 이걸 증명하는 코드임
+
+    // 입력 값
+
+    // 3 2
+    // 2 3 L
+    // 2 1 R
+
+    // 5 6
+    // 6 3 L
+    // 6 8 R
+    // 3 1 L
+    // 3 5 R
+
+    // 출력 값
+
+    // NO
+
+    // YES
+
+import java.util.*;
+
+public class Main {
+
+    //높이 20까지의 이분트리를 취급할 예정
+    final static int MAX_BINARY_TREE_SIZE = 1 << 20;
+
+    static Map<Integer, Integer> weightAndId = new HashMap<>(); 
+        
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt(); // 頂点の数
+        int R = sc.nextInt(); // 根の頂点のweight
+        
+        // 이분트리에 대응하는 배열
+        int[] binaryTree = new int[MAX_BINARY_TREE_SIZE];
+        
+        // 존재하지 않는 접점의 값은 -1
+        for(int i=0; i<MAX_BINARY_TREE_SIZE; i++){
+            binaryTree[i] = -1;
+        }
+        
+        binaryTree[0] = R;
+        weightAndId.put(R,0);
+        
+        // 辺の数だけループして入力
+        for (int i = 0; i < N-1; i++) {
+            int aw = sc.nextInt();
+            int bw = sc.nextInt();
+            char lr = sc.next().charAt(0);
+            
+            // 부모의 접점의 id로부터 자식의 접점id을 계산한다.
+            int aid = weightAndId.get(aw);
+            int bid = -1;
+            if(lr == 'L'){
+                bid = aid * 2 + 1;
+            } else {
+                bid = aid * 2 + 2;
+            }
+            
+            // id와 weight을 紐づける(연결한다)
+            binaryTree[bid] = bw;
+            weightAndId.put(bw, bid);
+        }
+        
+        // 이분탐색트리의 판정 (기본값 true)
+        boolean isBinarySearchTree = true;
+        for(int i=1; i<MAX_BINARY_TREE_SIZE; i++){
+            int childId = i;
+            // 자식 접점의 id로부터 부모접점의 id를 구한다
+            int parentId = (childId - 1) / 2;
+            
+            // 접점이 존재하지않으면, 스킵
+            if(binaryTree[childId] == -1){
+                continue;
+            }
+            
+            // 왼쪽 자식의 접점이라면
+            // 왼쪽 자식이 부모보다 값이 작아야 이진탐색트리
+            if(parentId * 2 + 1 == childId){
+                if(binaryTree[parentId] < binaryTree[childId]){
+                    isBinarySearchTree = false;
+                }
+            // 오른쪽 자식의 접점이라면
+            // 오른쪽 자식이 부모보다 값이 커야하는게 이진탐색트리
+            } else if(parentId * 2 + 2 == childId){
+                if(binaryTree[parentId] > binaryTree[childId]){
+                    isBinarySearchTree = false;
+                }
+            }
+        }
+        
+        if(isBinarySearchTree){
+            System.out.println("YES");
+        } else {
+            System.out.println("NO");
+        }
+    }
+}
