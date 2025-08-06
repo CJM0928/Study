@@ -1,0 +1,95 @@
+import java.util.*;
+
+// 접점 개수,  루트 값
+//     3           2
+
+// 부모 자식 왼쪽(L),오른쪽(R)
+//  2      3         L
+//  2      1         R        
+
+public class Main {
+    static Map<Integer, Integer> weightAndId = new HashMap<>();
+    static Map<Integer, Integer> idAndWeight = new HashMap<>();
+
+    // 頂点のweightに対応する頂点のidを取得する
+    static int getIdFromWeight(int weight) {
+        if (!weightAndId.containsKey(weight)) { // 新しいweightならば、新しいidを割り振る
+            weightAndId.put(weight, weightAndId.size());
+        }
+        int id = weightAndId.get(weight);
+        idAndWeight.put(id, weight);
+        return id;
+    }
+
+    // 頂点のidに対応するweightを取得する
+    static int getWeight(int id) {
+        return idAndWeight.get(id);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt(); // 頂点の数
+        int R = sc.nextInt(); // 根の頂点のweight
+        int[] tree = new int[N]; // 根付き木に対応する配列
+        char[] lrChild = new char[N]; // 左右いずれの子かを表す配列
+
+        // 各頂点の親を自身として初期化
+        for (int i = 0; i < N; i++) {
+            tree[i] = i;
+        }
+
+        // 辺の数だけループして入力
+        for (int i = 0; i < N-1; i++) {
+            int aw = sc.nextInt();
+            int bw = sc.nextInt();
+            char lr = sc.next().charAt(0);        // Left, Right 자식 판별 여부
+            
+            int aid = getIdFromWeight(aw);
+            int bid = getIdFromWeight(bw);
+
+            // 頂点bの親を頂点aとする
+            tree[bid] = aid;
+            
+            // 접점b가 Left Right 어디 자식인지 보존한다
+            lrChild[bid] = lr;
+        }
+        
+        // 이분기탐색의 판정
+        boolean isBinarySearchTree = true;
+        for(int i=0; i<N; i++){
+            int childId = i;
+            int parentId = tree[i];
+            
+            // 'L'(76) 또는 'R'(82)의 ASCII 코드값으로 저장됨
+            int lr = lrChild[i];        
+            
+            // 만약 루트라면, 무시하고 넘어감
+            if(childId == parentId){
+                continue;
+            }
+            
+            // 정수값끼리 비교 (예: 76 == 76) → 정상 작동
+            if(lr == 'L'){
+                // 왼쪽 자식의 접점일 때, 부모의 weight >= 왼쪽 자식의 weight
+                // 이진 탐색트리는 각 노드 값이이
+                // 1. 부모 >= 왼쪽
+                // 2. 부모 <= 오른쪽 구조다
+                // 이 두가지를 충족해야 이진 탐색트리가 된다.
+                if(getWeight(parentId) < getWeight(childId)){
+                    isBinarySearchTree = false;
+                }
+            } else if (lr == 'R')  {
+                if(getWeight(parentId) > getWeight(childId)){
+                    isBinarySearchTree = false;
+                }
+            } 
+        }
+        
+        if(isBinarySearchTree){
+            System.out.println("YES");
+        } else {
+            System.out.println("NO");
+        }
+
+    }
+}
