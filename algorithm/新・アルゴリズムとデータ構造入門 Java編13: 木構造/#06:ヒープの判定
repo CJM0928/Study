@@ -1,0 +1,101 @@
+import java.util.*;
+
+// 최대힙 상태인지 아닌지 확인하기
+
+// 입력 값
+
+// 5 10
+// 10 11
+// 10 9
+// 9 3
+// 3 2
+
+// 10 91753
+// 91753 76540
+// 76540 31536
+// 31536 14625
+// 31536 22346
+// 91753 36347
+// 22346 5911
+// 91753 26082
+// 76540 70927
+// 36347 32065
+
+// 출력 값
+
+// NO
+
+// YES
+
+public class Main {
+    
+    // Map을 두개 만들어놔서 탐색이 쉽도록 만듦
+    static Map<Integer, Integer> weightAndId = new HashMap<>();
+    static Map<Integer, Integer> idAndWeight = new HashMap<>();
+    
+    // 정점의 weight에 대응하는 정점id을 습득
+    static int getIdFromWeight(int weight){
+        if(!weightAndId.containsKey(weight)){
+            weightAndId.put(weight, weightAndId.size());
+        }
+        int id = weightAndId.get(weight);
+        idAndWeight.put(id,weight);
+        return id;
+    }
+    
+    static int getWeight(int id){
+        return idAndWeight.get(id);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        int n = sc.nextInt(); // 정점 개수
+        int r = sc.nextInt(); // 루트 값
+        
+        int[] tree = new int[n];
+        
+        // 일단 트리 형성
+        for(int i=0; i<n; i++){
+            tree[i] = i;
+        }
+        
+        // 주변 값들을 루프시켜켜 채우기
+        for(int i=0; i<n-1; i++){
+            int aw = sc.nextInt();
+            int bw = sc.nextInt();
+            
+            int aid = getIdFromWeight(aw);
+            int bid = getIdFromWeight(bw);
+            
+            // 접점b의 부모를 접점a로 삼는다.
+            tree[bid] = aid;
+        }
+        
+        // 최대 루프를 판정
+        // 기본값은 true로 둔다
+        boolean isMaxHeap = true;
+        
+        for(int i=0; i<n; i++){
+            int childId = i;
+            int parentId = tree[i];
+            
+            // 루프값일 경우 넘어가기기
+            if(childId == parentId){
+                continue;
+            }
+            
+            // 부모의 weight >= 자식의 weight 이 상태라면, 최대 루프값이 됨
+            // 반대의 경우 isMaxHeap을 false로 변경경
+            if(getWeight(parentId) < getWeight(childId)){
+                isMaxHeap = false;
+            }
+        }
+        
+        if(isMaxHeap){
+            System.out.println("YES");
+        } else {
+            System.out.println("NO");
+        }
+    }
+}
