@@ -1,0 +1,100 @@
+// 입력 치
+
+// 5 5
+// .....
+// ..#..
+// ###..
+// ..##.
+// .....
+// 2 2
+// 4 2
+
+// 결과 치
+// マス (2, 2) からマス (4, 2) までの最短距離は 12 です
+
+import java.util.*;
+
+public class Main {
+
+    static class Vec2 {
+        int y;
+        int x;
+
+        Vec2(int y, int x) {
+            this.y = y;
+            this.x = x;
+        }
+    }
+
+    static int[] dy = {-1, 0, 1, 0};
+    static int[] dx = {0, 1, 0, -1};
+
+    static final int INF = -1;
+
+    static int solveMaze(int h, int w, int[][] maze, int sy, int sx, int gy, int gx) {
+        // 座標を要素にとるキュー q を用意
+        Queue<Vec2> q = new ArrayDeque<>();
+        // キューにスタートの座標 (sy, sx) を追加
+        q.add(new Vec2(sy, sx));
+        // 最短距離を表す 2 次元配列 distance を用意
+        int[][] distance = new int[h][w];
+        // 最短距離を INF で初期化
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                distance[i][j] = INF;
+            }
+        }
+        // スタートのマス目の距離を 0 とする
+        distance[sy][sx] = 0;
+
+        // キューが空になるまで
+        while (!q.isEmpty()) {
+            // キューから座標 cur を取り出す
+            Vec2 cur = q.poll();
+
+            // i を 0 から 3 まで繰り返す
+            for (int i = 0; i < 4; i++) {
+                // cur는 현재 큐에서 꺼낸 좌표이며,
+                // ny, nx는 그 위치에서 이동할 수 있는 상하좌우 방향의 좌표를 의미
+                // 隣接するマスの座標 (ny, nx) を dx[i] と dy[i] を使って計算
+                // dy = {-1, 0, 1, 0};
+                // dx = {0, 1, 0, -1};
+                int ny = cur.y + dy[i];
+                int nx = cur.x + dx[i];
+                // もし、座標 (ny, nx) が範囲内で
+                if (0 <= ny && ny < h && 0 <= nx && nx < w) {
+                    // そのマスが床マスで、未訪問であれば
+                    if (maze[ny][nx] == 0 && distance[ny][nx] == INF) {
+                        // 最短距離を更新
+                        // 	현재 위치까지의 최단 거리 + 1 = 다음 위치까지의 최단 거리
+                        distance[ny][nx] = distance[cur.y][cur.x] + 1;
+                        // 座標 (ny, nx) をキューに追加
+                        q.add(new Vec2(ny, nx));
+                    }
+                }
+            }
+        }
+
+        // ゴールのマス目の距離を返す
+        return distance[gy][gx];
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int h = sc.nextInt(), w = sc.nextInt();
+        int[][] maze = new int[h][w];
+        for (int i = 0; i < h; i++) {
+            String line = sc.next();
+            for (int j = 0; j < w; j++) {
+                maze[i][j] = line.charAt(j) == '#' ? 1 : 0;
+            }
+        }
+        int sy = sc.nextInt() - 1, sx = sc.nextInt() - 1;
+        int gy = sc.nextInt() - 1, gx = sc.nextInt() - 1;
+
+        int d = solveMaze(h, w, maze, sy, sx, gy, gx);
+
+        System.out.println("マス (" + (sy + 1) + ", " + (sx + 1) + ") からマス (" + (gy + 1) + ", " + (gx + 1) + ") までの最短距離は " + d + " です");
+    }
+}
