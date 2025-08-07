@@ -1,0 +1,121 @@
+// 깊이 우선 탐색 (DFS / 深さ優先探索) 을 기반으로 시작
+
+// 입력 값
+
+// 5 5
+// 1 1
+// 5 5
+// .....
+// .#.#.
+// #..##
+// ..##.
+// #....
+
+// 5 5
+// 1 1
+// 5 5
+// .....
+// .#.#.
+// #..##
+// .###.
+// #....
+
+// 출력 값
+
+// Yes
+
+// No
+
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.ArrayDeque;
+
+public class Main {
+
+    static class Vec2 {
+        int y;
+        int x;
+
+        Vec2(int y, int x) {
+            this.y = y;
+            this.x = x;
+        }
+    }
+
+    static int[] dy = {-1, 0, 1, 0};
+    static int[] dx = {0, 1, 0, -1};
+
+    static void solveMaze(int h, int w, int[][] maze, int sy, int sx, int gy, int gx) {
+        // 座標を要素にとるキュー q を用意
+        Queue<Vec2> q = new ArrayDeque<>();
+        // キューにスタートの座標 (sy, sx) を追加
+        q.add(new Vec2(sy, sx));
+        // 訪問済みかどうかを表す 2 次元配列 visited を用意
+        boolean[][] visited = new boolean[h][w];
+        // スタートのマス目を訪問済みにする
+        visited[sy][sx] = true;
+
+        // キューが空になるまで
+        while(!q.isEmpty()){
+            // キューから座標 cur を取り出す
+            Vec2 cur = q.poll();
+            
+            // i を 0 から 3 まで繰り返す
+            for(int i=0; i<4; i++){
+                // 隣接するマスの座標 (ny, nx) を dx[i] と dy[i] を使って計算
+                int ny = cur.y + dy[i];
+                int nx = cur.x + dx[i];
+                // もし、座標 (ny, nx) が範囲内で
+                if(0 <= ny && ny < h && 0 <= nx && nx < w){
+                    // そのマスが床マスで、未訪問であれば
+                    if(maze[ny][nx] == 0 && !visited[ny][nx]){
+                        // マスを訪問済みに設定
+                        visited[ny][nx] = true;
+                        // 座標 (ny, nx) をキューに追加
+                        q.add(new Vec2(ny,nx));
+                    }
+                }
+            }
+        }
+
+        // もし、ゴールのマスが訪問済みなら
+        if(visited[gy][gx]){
+            // Yes と出力
+            System.out.println("Yes");
+        }  else { // そうでなければ
+            // No と出力
+            System.out.println("No");
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // 배열 크기
+        int h = sc.nextInt(),       // 5
+        w = sc.nextInt();           // 5
+        
+        // 시작점
+        int sy = sc.nextInt() - 1,  // 1
+        sx = sc.nextInt() - 1;      // 1
+        
+        // 도착점
+        int gy = sc.nextInt() - 1,  // 5
+        gx = sc.nextInt() - 1;      // 5
+        int[][] maze = new int[h][w];
+        for (int i = 0; i < h; i++) {
+            String line = sc.next();
+            for (int j = 0; j < w; j++) {
+                // # : 1
+                // . : 0 
+                maze[i][j] = line.charAt(j) == '#' ? 1 : 0;
+            }
+        }
+
+        solveMaze(h, w, maze, sy, sx, gy, gx);
+
+        sc.close();
+    }
+}
