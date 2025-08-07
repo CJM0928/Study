@@ -1,0 +1,94 @@
+                     [1] 시작점 (거리: 0)
+                       /             \
+                  거리 1             거리 1
+                    /                   \
+                  [2]                   [3]
+                /    \
+              거리 2 거리 2
+            /           \
+          [4]           [5]
+
+// 입력 값
+// 5 4 1
+// 1 2
+// 1 3
+// 2 4
+// 2 5
+
+// 출력 값
+// 頂点 0 から頂点 1 への最短距離は 0 です
+// 頂点 0 から頂点 2 への最短距離は 1 です
+// 頂点 0 から頂点 3 への最短距離は 1 です
+// 頂点 0 から頂点 4 への最短距離は 2 です
+// 頂点 0 から頂点 5 への最短距離は 2 です
+
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.ArrayDeque;
+
+public class Main {
+
+    static final int INF = -1;
+
+    static int[] shortestPath(int n, List<List<Integer>> g, int s) {
+        // 空のキュー q を用意
+        Queue<Integer> q = new ArrayDeque<>();
+        // 最初の頂点 s をキューに追加
+        q.add(s);
+        // 最初の頂点からの距離を記録する配列 distance を用意
+        int[] distance = new int[n];
+        
+        // 配列を INF で初期化
+        for(int i=0; i<n; i++){
+            distance[i] = INF;
+        }
+        // 最初の頂点 s の距離を 0 にする
+        distance[s] = 0;
+
+        // キューが空になるまで
+        while(!q.isEmpty()){
+            // キューから頂点 v を取り出す
+            int v = q.poll();
+            
+            // 隣接する頂点 u を順に見る
+            for(int u : g.get(v)){
+                // もし頂点 u の距離が INF であれば
+                if(distance[u] == INF){
+                    // 頂点 u の距離を「頂点 v の距離 + 1」にする
+                    distance[u] = distance[v] + 1;
+                    // 頂点 u をキューに追加
+                    q.add(u);
+                }
+            }
+        }
+
+        // 距離の配列を返す
+        return distance;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt(), m = sc.nextInt(), s = sc.nextInt() - 1;
+        List<List<Integer>> graph = new ArrayList<List<Integer>>(n);
+
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<Integer>());
+        }
+
+        for (int i = 0; i < m; i++) {
+            int a = sc.nextInt() - 1, b = sc.nextInt() - 1;
+            graph.get(a).add(b);
+            graph.get(b).add(a);
+        }
+
+        int[] distance = shortestPath(n, graph, s);
+        for (int i = 0; i < n; i++) {
+            System.out.println("頂点 " + s + " から頂点 " + (i + 1) + " への最短距離は " + distance[i] + " です");
+        }
+
+        sc.close();
+    }
+}
