@@ -1,0 +1,35 @@
+// StringBuilder를 이용하고
+// Character 클래스를 이용해서, 대 소문자 변환 후,
+// StringBuilder의 setCharAt메서드를 이용해서 중간에 값을 채워준다 
+
+// 입맛에 따라 코드를 더 줄일수도있다.
+
+// 입력 값
+// Paiza
+
+// 출력 값
+// pAIZA
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        // 自分の得意な言語で
+        // Let's チャレンジ！！
+        Scanner sc = new Scanner(System.in);
+        String line = sc.nextLine();
+        StringBuilder sb = new StringBuilder(line);
+        
+        for(int i=0; i<line.length(); i++){
+            
+            if(sb.charAt(i) >= 'A' && sb.charAt(i) <= 'Z'){
+                char lower = Character.toLowerCase(sb.charAt(i));
+                sb.setCharAt(i,lower);
+            } else if(sb.charAt(i) >= 'a' && sb.charAt(i) <= 'z'){
+                char upper = Character.toUpperCase(sb.charAt(i));
+                sb.setCharAt(i,upper);
+            }
+        }
+        
+        System.out.println(sb.toString());
+    }
+}
