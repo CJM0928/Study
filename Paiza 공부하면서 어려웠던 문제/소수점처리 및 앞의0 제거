@@ -1,0 +1,53 @@
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String input = sc.nextLine();
+        System.out.println(cleanMalformedNumber(input));
+    }
+
+    // 여러 개 소수점 처리
+    private static String fixMultipleDots(String s) {
+        int firstDot = s.indexOf(".");
+        if (firstDot == -1) return s;
+
+        StringBuilder fixed = new StringBuilder();
+        fixed.append(s.charAt(0));
+        for (int i = 1; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (ch == '.' && i != firstDot) continue; // skip extra dots
+            fixed.append(ch);
+        }
+        return fixed.toString();
+    }
+
+    // 앞의 0 제거 (단, 소수 시작 시 "0." 형태 유지)
+    private static String removeLeadingZeros(String s) {
+        if (s.contains(".")) {
+            String[] parts = s.split("\\.", 2); // split at the first dot
+            parts[0] = parts[0].replaceFirst("^0+(?!$)", "");
+            return parts[0] + "." + parts[1];
+        } else {
+            return s.replaceFirst("^0+(?!$)", "");
+        }
+    }
+
+    // // 여러 개 소수점 처리
+    private static String removeTrailingZeros(String s) {
+        if (s.contains(".")) {
+            s = s.replaceFirst("0+$", "");       // remove trailing zeros
+            s = s.replaceFirst("\\.$", "");       // remove trailing dot
+        }
+        return s;
+    }
+
+    // === 統合処理 ===
+    public static String cleanMalformedNumber(String s) {
+        s = fixMultipleDots(s);        // step 1: fix extra dots
+        s = removeLeadingZeros(s);     // step 2: remove leading zeros
+        s = removeTrailingZeros(s);    // step 3: remove trailing zeros
+        return s;
+    }
+}
