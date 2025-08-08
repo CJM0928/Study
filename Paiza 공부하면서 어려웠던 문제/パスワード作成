@@ -1,0 +1,52 @@
+import java.util.*;
+
+// 입력 값
+
+// 5
+// 1
+// 2 T
+// K
+
+// 1
+// 1
+// 1 p
+// a
+
+// 출력 값
+
+// KTKKK
+
+// p
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        int q = sc.nextInt();
+        sc.nextLine();
+        
+        String[] val = new String[n];
+        Map<Integer,String> map = new HashMap<>();
+        for(int i=0; i<q; i++){
+            
+            String[] str = sc.nextLine().split(" ");
+            int n_1 = Integer.parseInt(str[0]) - 1;
+            String c_1 = str[1];
+
+            map.put(n_1,c_1);
+        }
+        
+        String c = sc.nextLine();
+        
+        Arrays.fill(val,c);
+        
+        for(Map.Entry<Integer,String> value : map.entrySet()){
+            val[value.getKey()] = value.getValue();
+        }
+        
+        for(int i=0; i<n; i++){
+            System.out.print(val[i]);
+        }
+    }
+}
