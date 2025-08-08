@@ -1,0 +1,125 @@
+Java에서 \\는 escape sequence (이스케이프 시퀀스)
+Java에서 문자열 리터럴 안에 \ (역슬래시)를 쓰면, Java 문자열 자체의 escape 문자로 인식
+
+그런데 Java 정규표현식에서는 \d, \w, \s 등이 특별한 의미를 가지는 메타문자죠.
+하지만 Java 문자열 안에서는 \d라고 쓰면 오류
+그래서 정규표현식에서 \d를 쓰고 싶으면, 문자열에서는 \\d로 두 번 적어줘야함
+
+| 원하는 정규표현식        | Java에서 문자열로 적을 때 |
+| ---------------- | ---------------- |
+| `\d` (숫자)        | `"\\d"`          |
+| `\.` (마침표)       | `"\\."`          |
+| `\s+` (공백 1개 이상) | `"\\s+"`         |
+
+\ → Java에서는 이스케이프 문자
+\\ → Java 문자열에서 실제로 \ 하나를 표현하기 위한 이스케이프 시퀀스
+\\d → Java 문자열에서 정규표현식의 \d를 쓰기 위한 방법
+
+| 패턴       | 설명               | 예시                               |       |                    |
+| -------- | ---------------- | -------------------------------- | ----- | ------------------ |
+| `.`      | 임의의 한 문자 (개행 제외) | `a.c` → `abc`, `a1c` 등           |       |                    |
+| `*`      | 0회 이상 반복         | `ab*c` → `ac`, `abc`, `abbc`     |       |                    |
+| `+`      | 1회 이상 반복         | `ab+c` → `abc`, `abbc` (X: `ac`) |       |                    |
+| `?`      | 0회 또는 1회         | `ab?c` → `ac`, `abc`             |       |                    |
+| `^`      | 문자열 시작           | `^abc` → `abc`로 시작해야 함           |       |                    |
+| `$`      | 문자열 끝            | `xyz$` → `xyz`로 끝나야 함            |       |                    |
+| `[]`     | 문자 집합            | `[abc]` → `a`, `b`, `c` 중 하나     |       |                    |
+| `[^abc]` | 제외 문자 집합         | `a`, `b`, `c` 제외                 |       |                    |
+| \`       | \`               | OR (또는)                          | \`abc | def`→`abc`또는`def\` |
+
+| 패턴    | 의미                         |
+| ----- | -------------------------- |
+| `\\d` | 숫자 (0\~9) = `[0-9]`        |
+| `\\D` | 숫자가 아닌 것 = `[^0-9]`        |
+| `\\w` | 알파벳/숫자/\_ = `[a-zA-Z0-9_]` |
+| `\\W` | 단어 문자가 아닌 것                |
+| `\\s` | 공백 문자 (스페이스, 탭, 줄바꿈 등)     |
+| `\\S` | 공백이 아닌 문자                  |
+
+| 패턴      | 설명       |
+| ------- | -------- |
+| `{n}`   | 정확히 n번   |
+| `{n,}`  | n번 이상    |
+| `{n,m}` | n\~m번 사이 |
+
+특수 문자 이스케이프
+  정규표현식에서 특별한 의미가 있는 문자는 \\로 이스케이프해야 함:
+  
+  .  ^  $  *  +  ?  (  )  [  ]  {  }  |  \
+  
+  예:
+  \\. → 마침표 자체 (. 문자)
+  
+  \\d+\\.\\d+ → 소수 (예: 12.34)
+
+  String str = "00123.00";
+  String result = str.replaceFirst("^0+", ""); // 앞의 0 제거
+  
+  String str = "abc123";
+  boolean isOnlyDigits = str.matches("\\d+"); // false
+
+  // Java 정규표현식 예제 모음
+import java.util.regex.*;
+
+public class RegexExamples {
+    public static void main(String[] args) {
+
+        // 1. 숫자만 포함
+        String str1 = "123456";
+        System.out.println("1: " + str1.matches("\\d+")); // true
+
+        // 2. 앞의 0 제거
+        String str2 = "000123";
+        String result2 = str2.replaceFirst("^0+", "");
+        System.out.println("2: " + result2); // 123
+
+        // 3. 여러 개의 점 제거
+        String str3 = "1.2.3.4";
+        String result3 = str3.replaceAll("\\.", "");
+        System.out.println("3: " + result3); // 1234
+
+        // 4. 알파벳 대소문자 구분 없이 검사
+        String str4 = "Hello";
+        System.out.println("4: " + str4.matches("(?i)hello")); // true
+
+        // 5. 이메일 패턴 검사
+        String str5 = "user@example.com";
+        boolean isEmail = str5.matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
+        System.out.println("5: " + isEmail); // true
+
+        // 6. 문자열 앞뒤 공백 제거
+        String str6 = "  hello world  ";
+        String result6 = str6.replaceAll("^\\s+|\\s+$", "");
+        System.out.println("6: '" + result6 + "'"); // 'hello world'
+
+        // 7. 숫자와 알파벳만 허용
+        String str7 = "abc123";
+        System.out.println("7: " + str7.matches("[a-zA-Z0-9]+")); // true
+
+        // 8. 전화번호 형식 검사 (예: 010-1234-5678)
+        String phone = "010-1234-5678";
+        boolean isPhone = phone.matches("010-\\d{4}-\\d{4}");
+        System.out.println("8: " + isPhone); // true
+
+        // 9. 특정 문자열로 시작
+        String str9 = "hello world";
+        System.out.println("9: " + str9.matches("^hello.*")); // true
+
+        // 10. 특정 문자열로 끝남
+        String str10 = "myfile.txt";
+        System.out.println("10: " + str10.matches(".*\\.txt$")); // true
+    }
+}
+
+| #  | 설명            | 정규표현식                                   | 예시 입력                  | 출력                                    |
+| -- | ------------- | --------------------------------------- | ---------------------- | ------------------------------------- |
+| 1  | 숫자만 포함        | `\\d+`                                  | `"123456"`             | `true`                                |
+| 2  | 앞의 0 제거       | `^0+`                                   | `"000123"` → `"123"`   |                                       |
+| 3  | 모든 점 제거       | `\\.`                                   | `"1.2.3.4"` → `"1234"` |                                       |
+| 4  | 대소문자 구분 없이 검사 | `(?i)hello`                             | `"Hello"`              | `true`                                |
+| 5  | 이메일 검사        | `^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$` | `"user@example.com"`   | `true`                                |
+| 6  | 앞뒤 공백 제거      | \`^\s+                                  | \s+$\`                 | `"  hello world  "` → `"hello world"` |
+| 7  | 숫자와 알파벳만 허용   | `[a-zA-Z0-9]+`                          | `"abc123"`             | `true`                                |
+| 8  | 전화번호 검사       | `010-\\d{4}-\\d{4}`                     | `"010-1234-5678"`      | `true`                                |
+| 9  | 특정 문자열로 시작    | `^hello.*`                              | `"hello world"`        | `true`                                |
+| 10 | 특정 확장자로 끝남    | `.*\\.txt$`                             | `"myfile.txt"`         | `true`                                |
