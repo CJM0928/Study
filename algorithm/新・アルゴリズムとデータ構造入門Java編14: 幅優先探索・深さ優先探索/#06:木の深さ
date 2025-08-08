@@ -1,0 +1,76 @@
+
+// 입력 값
+
+// 5 1
+// 1 2
+// 1 5
+// 2 3
+// 2 4
+
+// 출력 값
+
+// 頂点 1 の深さは 0 です
+// 頂点 2 の深さは 1 です
+// 頂点 3 の深さは 2 です
+// 頂点 4 の深さは 2 です
+// 頂点 5 の深さは 1 です
+
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.ArrayDeque;
+
+public class Main {
+
+    static List<List<Integer>> g;
+    static int[] depth;
+
+    static void dfs(int v, int p) {
+        // v に隣接するすべての頂点 u について
+        for(int u : g.get(v)){
+            // 頂点 u が親 p でなければ
+            if(u != p){
+                // 頂点 u の深さを「頂点 v の深さ + 1」にする
+                depth[u] = depth[v] + 1;
+                // 頂点 u に対して dfs を呼び出す
+                dfs(u,v);
+            }
+        }
+        
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt(),               // 5
+        m = n - 1,                          // 5-1 = 4  간선 개수
+        s = sc.nextInt() - 1;               // 1-1 = 0  시작점 
+
+        g = new ArrayList<List<Integer>>(n);
+
+        for (int i = 0; i < n; i++) {
+            g.add(new ArrayList<Integer>());
+        }
+
+        for (int i = 0; i < m; i++) {
+            int a = sc.nextInt() - 1,       // 1 1 2 2 -> 0 0 1 1 
+            b = sc.nextInt() - 1;           // 2 5 3 4 -> 1 4 2 3
+            
+            //양방향 그래프
+            g.get(a).add(b);
+            g.get(b).add(a);
+        }
+
+        depth = new int[n];                 // 깊이는 0부터 시작
+
+        // 시작점 , -1
+        dfs(s, -1);     
+
+        for (int i = 0; i < n; i++) {
+            System.out.println("頂点 " + (i + 1) + " の深さは " + depth[i] + " です");
+        }
+
+        sc.close();
+    }
+}
