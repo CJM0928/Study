@@ -1,0 +1,87 @@
+// 입력 값
+// 5 5
+// 1 2
+// 2 3
+// 3 4
+// 4 5
+// 5 2
+
+// 5 3
+// 1 2
+// 3 4
+// 4 5
+
+// 출력 값
+// 連結成分は 1 個です
+
+// 連結成分は 2 個です
+
+
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.ArrayDeque;
+
+public class Main {
+
+    static List<List<Integer>> g;
+
+    // 訪問済みかどうかを記録する配列 visited を用意
+    static boolean[] visited;
+    
+    static void dfs(int v) {
+        // 頂点 v を訪問済みにする
+        visited[v] = true;
+        // 頂点 v に隣接するすべての頂点 u について
+        for(int u : g.get(v)){
+            // 頂点 u が訪問済みでなければ
+            if(!visited[u]){
+                // 頂点 u に対して dfs を呼び出す
+                dfs(u);
+            }
+        }
+        
+    }
+
+    static int connectedComponents(int n) {
+        // visited を未訪問で初期化
+        visited = new boolean[n];
+        // 連結成分の個数を数えるための変数 cnt を 0 で初期化
+        int cnt = 0;
+        // 頂点を 1 つひとつ順番に見ていく
+        for(int i=0; i<n; i++){
+            // 頂点 i が訪問済みでなければ
+            if(!visited[i]){
+                // 頂点 i に対して dfs を呼び出す
+                dfs(i);
+                // 連結成分の個数を 1 つ増やす
+                cnt++;
+            }
+        }
+        // 連結成分の個数 cnt を返す
+        return cnt;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt(), m = sc.nextInt();
+
+        g = new ArrayList<List<Integer>>(n);
+
+        for (int i = 0; i < n; i++) {
+            g.add(new ArrayList<Integer>());
+        }
+
+        for (int i = 0; i < m; i++) {
+            int a = sc.nextInt() - 1, b = sc.nextInt() - 1;
+            g.get(a).add(b);
+            g.get(b).add(a);
+        }
+
+        System.out.println("連結成分は " + connectedComponents(n) + " 個です");
+
+        sc.close();
+    }
+}
