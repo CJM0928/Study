@@ -1,0 +1,81 @@
+// 입력 값
+
+// 5 4 1
+// 1 2
+// 1 5
+// 2 3
+// 2 4
+
+// 출력 값
+
+// 頂点 1 を探索
+// 頂点 2 を探索
+// 頂点 3 を探索
+// 頂点 4 を探索
+// 頂点 5 を探索
+
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.ArrayDeque;
+
+public class Main {
+
+    static void printVertex(int v) {
+        System.out.println("頂点 " + (v + 1) + " を探索");
+    }
+
+    static List<List<Integer>> g;
+
+    // 訪問済みかどうかを記録する配列 visited を用意
+    static boolean[] visited;
+    
+    static void dfs(int v) {
+        // 頂点 v を訪問済みにする
+        visited[v] = true;
+        // 頂点 v を出力する
+        printVertex(v);
+        // 頂点 v に隣接するすべての頂点 u について
+        for(int u : g.get(v)){
+            // 頂点 u が訪問済みでなければ
+            if(!visited[u]){
+                // 頂点 u に対して dfs を呼び出す
+                // 여기서 재귀가 발생
+                dfs(u);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt(),               // 5        점 5개
+        m = sc.nextInt(),                   // 4        간선 4개
+        s = sc.nextInt() - 1;               // 1        시작점 0 (실제값은 1이지만,
+                                            //                   배열은 0부터 시작)
+
+        g = new ArrayList<List<Integer>>(n);
+        
+        // 2차원 배열과 같은 역할로
+        // 내부에 ArrayList 인스턴스를 만들지 않으면, 에러가 발생
+        for (int i = 0; i < n; i++) {
+            g.add(new ArrayList<Integer>());
+        }
+
+        for (int i = 0; i < m; i++) {
+            int a = sc.nextInt() - 1,       // 1 1 2 2
+            b = sc.nextInt() - 1;           // 2 5 3 4
+            g.get(a).add(b);
+            g.get(b).add(a);
+        }
+
+        // 配列 visited を未訪問で初期化
+        visited = new boolean[n];
+
+        dfs(s);
+
+        sc.close();
+    }
+}
+
