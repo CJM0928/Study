@@ -1,0 +1,68 @@
+// 正しい数式を表す文字列 S が与えられるので、その数式を計算した結果を出力してください。
+// ただし、出てくる計算は足し算・引き算のみとし、数式に項として出てくる数字は全て 1 桁の正の数であるものとします。
+// 例として、1-2, 2+1-7 のような文字列は与えられる可能性がありますが、1+(-2) や -4-2+4, 5+-2 のような文字列は与えられないことが保証されている点に注意してください。
+
+// ・ 例
+// ・ S = "1+1"
+// 答えは 2 となります。
+
+// ・ S = "4+3-2+1"
+// 答えは 6 となります。
+
+// 条件
+// ・ 1 ≦ |S| ≦ 10000 ( |S| は、 S の文字数です。)
+// ・ 計算過程で出てくる値や計算結果の絶対値は必ず 10^8 以下になります。
+// ・ S は正しい表記の式です。
+// ・ S に項として出てくる数字は全て 1 桁の正の数であるものとします。
+
+// 入力例1
+// 1+2+3
+
+// 出力例1
+// 6
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        // 自分の得意な言語で
+        // Let's チャレンジ！！
+        Scanner sc = new Scanner(System.in);
+        String line = sc.nextLine();
+        String[] str = line.split("");
+        
+        int sum = 0;
+        int temp = 0;
+        
+        for(int i=0; i<line.length(); i++){
+            if(!str[i].equals("+") && !str[i].equals("-") && temp == 0){
+                temp = Integer.parseInt(str[i]);        
+            } else if(str[i].equals("+")){
+                sum += temp + Integer.parseInt(str[i+1]);
+                i++;
+                temp = 0;
+            } else if(str[i].equals("-")){
+                sum += temp - Integer.parseInt(str[i+1]);
+                i++;
+                temp = 0;
+            }
+        }
+        
+        System.out.println(sum);
+    }
+}
+
+아래의 방식으로 좀더 쉽게 풀기가 가능
+힌트는 char을 이용하는 것
+-----------------------------------------------------------------
+
+Scanner sc = new Scanner(System.in);
+char[] cs = sc.nextLine().toCharArray();
+
+int ans = 0, sign = 1;
+for (char c : cs) {
+    if (c == '+') sign = 1;
+    else if (c == '-') sign = -1;
+    else ans += sign * (c - '0'); // 1자리 숫자 조건이므로 안전
+}
+System.out.println(ans);
