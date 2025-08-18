@@ -1,0 +1,53 @@
+//右側のコードエリアには、絶対誤差を基準にして、ある関数が一定の値を超える境界を求める二分探索プログラムが実装されています。
+//このコードの終了条件や、中間値の計算方法を変更して、より高速に計算するプログラムを作成してみましょう。
+//なお、このコードでは実行時エラーのところに合計ループ回数が出力されるようにしてあります。
+//また、この演習課題はデフォルトコードでも正解になりますが、より高速に計算するプログラムを作成した場合でも正解になるように取り組んでみてください。
+
+//入力される値
+//3 10
+
+//期待する出力値
+//3.427
+
+import java.util.function.Function;
+import java.util.Scanner;
+import java.lang.Math;
+
+public class Main {
+	static int count = 0;
+
+	static double binarySearch(double l_init, double r_init, double precision,
+			Function<Double, Boolean> f) {
+		double l = l_init;
+		double r = r_init;
+
+		// 条件を変更
+		while (r - l > precision) {
+			// 中間値の計算方法を変更
+			double m = (l + r) / 2;
+
+			if (f.apply(m) == false) {
+				l = m;
+			} else {
+				r = m;
+			}
+			count++;
+		}
+		return r;
+	}
+
+	static int a, b;
+
+	static Boolean f(double x) {
+		return a * x + Math.sin(x) > b;
+	}
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		a = sc.nextInt();
+		b = sc.nextInt();
+		double x = binarySearch(1, 100, 0.0001, Main::f);
+		System.out.printf("%.3f\n", x);
+		System.err.println(count);
+	}
+}
