@@ -1,0 +1,53 @@
+//  初期値の決めかた
+
+// ・f(l) ≠ f(r)
+// ・l < x < r で f(x) が計算できる
+// ・整数 → l = (答えの最小値 - 1), r = (答えの最大値 + 1)
+// ・浮動小数点数 → l = (答えの最小値), r = (答えの最大値)
+
+//  終了条件
+
+// ・整数 → r – l ≦ 1
+// ・浮動小数点数、絶対誤差 → r – l ≦ ε
+// ・浮動小数点数、相対誤差 → (r – l) / l ≦ ε
+// ・イテレーション数
+
+// 中間値の計算
+
+// ・整数 → ⌊(l + r) / 2⌋
+// ・浮動小数点数、絶対誤差 → (l + r) / 2
+// ・浮動小数点数、相対誤差 → √(l × r)
+
+import java.util.function.Function;
+
+public class Main {
+    static int binarySearch(int l_init, int r_init, int precision, Function<Integer, Boolean> f) {
+        // 初期値
+        int l = l_init;
+        int r = r_init;
+
+        // 終了条件
+        while (r - l > precision) {
+            // 中間値の計算
+            int m = (l + r) / 2;
+
+            if (f.apply(m) == false) {
+                l = m;
+            } else {
+                r = m;
+            }
+        }
+        // r (true 側) を返す
+        return r;
+    }
+
+    static Boolean f(int x) {
+        int[] a = {2, 3, 5, 7, 11, 13, 17, 19, 23};
+        return a[x] >= 10;
+    }
+
+    public static void main(String[] args) {
+        // 初期値と精度の設定
+        System.out.println(binarySearch(-1, 9, 1, Main::f));
+    }
+}
