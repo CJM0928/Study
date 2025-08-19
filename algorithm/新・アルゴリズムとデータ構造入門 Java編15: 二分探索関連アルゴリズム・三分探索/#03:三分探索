@@ -1,0 +1,62 @@
+// Function 인터페이스 import
+import java.util.function.Function;
+
+// 출력 예시
+// x = 2.0000379482150925
+// f(x) = 3.000000001440067
+
+public class Main {
+
+    // Function 인터페이스
+    // @FunctionalInterface
+    // public interface Function<T, R> {
+    //     R apply(T t);
+    // }
+    // T : 입력 타입
+    // R : 출력 타입
+    // apply(T t) : 함수 호출처럼 쓰이는 메서드
+    
+    static double ternarySearch(double l_init, double r_init, double precision,
+                                Function<Double, Double> f) {
+        double l = l_init;
+        double r = r_init;
+
+        // l과 r의 간격이 precision 이하가 될 때까지 반복
+        while (r - l > precision) {
+            double m1 = (2*l + r) / 3;
+            double m2 = (l + 2*r) / 3;
+
+            // 최소값 탐색: f(m1) < f(m2) → 오른쪽 범위 버림
+            // 최대값 탐색: f(m1) <= f(m2) → 왼쪽 범위 버림
+            // 함수값이 작아지는 쪽으로 탐색 범위를 줄이기 때문
+            if (f.apply(m1) < f.apply(m2)) {
+                r = m2;
+            } else {
+                l = m1;
+            }
+        }
+
+        // 보통 (l + r) / 2 를 반환 (precision 덕에 r만 반환해도 큰 차이는 없음)
+        return (l + r) / 2;
+    }
+
+    static double f(double x) {
+        return (x - 2) * (x - 2) + 3; // 최소값 f(2) = 3
+    }
+
+    public static void main(String[] args) {
+        // l_init : 탐색 구간 왼쪽 끝
+        // r_init : 탐색 구간 오른쪽 끝
+        // precision : 반복 종료 조건
+        // f : 탐색할 대상 함수
+
+        // Main::f → 메서드 참조 (x -> Main.f(x) 와 동일)
+        System.out.println("x = " + ternarySearch(-100, 100, 0.0001, Main::f));
+        System.out.println("f(x) = " + f(ternarySearch(-100, 100, 0.0001, Main::f)));
+
+        // 익명 클래스 방식과 동일한 의미:
+        // ternarySearch(-100, 100, 0.0001, new Function<Double, Double>() {
+        //     public Double apply(Double x) { return Main.f(x); }
+        // });
+    }
+}
