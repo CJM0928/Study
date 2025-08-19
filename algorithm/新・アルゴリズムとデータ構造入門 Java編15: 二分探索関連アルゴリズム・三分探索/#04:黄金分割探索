@@ -1,0 +1,46 @@
+import java.util.function.Function;
+import java.lang.Math;
+
+public class Main {
+    static double phi = (1 + Math.sqrt(5)) / 2;
+
+    static double goldenSectionSearch(double l_init, double r_init, double precision,
+            Function<Double, Double> f) {
+        // 初期化
+        double l = l_init;
+        double r = r_init;
+        double m1 = (l + (phi - 1) * r) / phi;
+        double m2 = ((phi - 1) * l + r) / phi;
+        double f_m1 = f.apply(m1);
+        double f_m2 = f.apply(m2);
+
+        // 終了条件まで繰り返し
+        while (r - l > precision) {
+            // 更新
+            if (f_m1 < f_m2) {
+                r = m2;
+                m2 = m1;
+                f_m2 = f_m1;
+                m1 = (l + (phi - 1) * r) / phi;
+                f_m1 = f.apply(m1);
+            } else {
+                l = m1;
+                m1 = m2;
+                f_m1 = f_m2;
+                m2 = ((phi - 1) * l + r) / phi;
+                f_m2 = f.apply(m2);
+            }
+        }
+        return r;
+    };
+
+    static double f(double x) {
+        return (x - 2) * (x - 2) + 3;
+    }
+
+
+    public static void main(String[] args) {
+        double x = goldenSectionSearch(-100, 100, 0.0001, Main::f);
+        System.out.printf("%.3f\n", f(x));
+    }
+}
