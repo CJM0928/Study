@@ -1,0 +1,98 @@
+import java.util.function.Function;
+
+/**
+ * Stern–Brocot(스턴–브로코트) 트리 기반 분수 탐색 데모
+ * ----------------------------------------------------
+ * - 목표: f(x) == 0 이 되는 "정확한" 유리수 x = n/d 를 찾는다.
+ * - 방법: 왼쪽 경계 L=0/1, 오른쪽 경계 R=1/0(무한대)에서 시작하여
+ *         중항( mediant ) M = (L.n+R.n) / (L.d+R.d )를 반복적으로 끼워 넣는다.
+ *         f(M)의 부호에 따라 L 또는 R을 M으로 갱신한다.
+ * - 이 예제의 f는 x ? 2/3 비교이므로, 결과는 정확히 2/3이 된다.
+ */
+class Rational { // 분수형(유리수) 표현용 단순 자료구조
+    int n; // 분자 numerator
+    int d; // 분모 denominator
+
+    Rational(int n, int d) {
+        // 주의: 여기서는 기약분수로 약분하지 않는다(그럴 필요가 없음).
+        // Stern–Brocot 탐색은 중항의 성질로 인해 목표 기약분수에 정확히 도달한다.
+        this.n = n;
+        this.d = d;
+    }
+}
+
+public class Main {
+
+    /**
+     * 스턴–브로코트 탐색 본체.
+     *
+     * @param f  분수 x(=n/d)를 받아 비교 결과를 반환하는 함수:
+     *           -1 : x가 목표값보다 작다  (x < target)
+     *            0 : x가 목표값과 같다   (x == target) → 바로 종료
+     *            1 : x가 목표값보다 크다  (x > target)
+     * @return   f(x) == 0 을 만족하는 정확한 분수 x (기약분수라면 반드시 도달)
+     *
+     * ⚠ 무한루프 주의:
+     *   - f(x) == 0 이 "절대로" 발생하지 않는 경우(목표가 정확한 유리수가 아닌 경우)
+     *     이 루프는 끝나지 않는다. 실전에서는 반복 횟수 제한, 오차 허용(ε) 등을 둔다.
+     */
+    static Rational rationalSearch(Function<Rational, Integer> f) {
+        // 왼쪽 경계 L = 0/1 (= 0)
+        Rational l = new Rational(0, 1);
+        // 오른쪽 경계 R = 1/0 (= ∞, 분모 0은 경계용 센티넬)
+        Rational r = new Rational(1, 0);
+
+        while (true) {
+            // 중항( mediant ):
+            // L=a/b, R=c/d 일 때 M = (a+c)/(b+d)
+            Rational m = new Rational(l.n + r.n, l.d + r.d);
+
+            // 현재 중항 m에 대해 f(m)의 부호를 조사
+            int res = f.apply(m);
+
+            if (res == 0) {
+                // m이 목표와 정확히 같다면 탐색 종료
+                return m;
+            }
+            if (res == -1) {
+                // m이 목표보다 작다면, 정답은 (m, r) 구간 안에 있다 → L를 m으로 이동
+                l = m;
+            } else {
+                // res == 1: m이 목표보다 크다면, 정답은 (l, m) 구간 안에 있다 → R를 m으로 이동
+                r = m;
+            }
+            // 이후 반복: 새로운 L, R 사이에서 다시 중항을 만들어 좁혀나간다.
+        }
+    }
+
+    /**
+     * 비교 함수 f(x):
+     *   x ? 2/3 를 부동소수점 연산 없이 "정수 비교"로 구현한다.
+     *
+     * 3*x ? 2  를  x = n/d 에 대해 정수식으로 쓰면:
+     *   3*(n/d) ? 2   ↔   3*n ? 2*d
+     *
+     * @param x  비교 대상 분수(중항 등)
+     * @return   1  : x > 2/3 (초과)  → 오른쪽 경계를 줄여야 함
+     *          -1  : x < 2/3 (부족)  → 왼쪽 경계를 늘려야 함
+     *           0  : x == 2/3 (정확히 일치)
+     */
+    static int f(Rational x) {
+        // d = 3*n - 2*d 의 부호가 0보다 크면 3n > 2d → x > 2/3
+        int d = 3 * x.n - 2 * x.d;
+
+        if (d > 0) // 초과: x > 2/3
+            return 1;
+        if (d < 0) // 부족: x < 2/3
+            return -1;
+        return 0;   // 일치: x == 2/3
+    }
+
+    public static void main(String[] args) {
+        // 비교 함수로 Main::f 를 넘겨 탐색 실행
+        Rational x = rationalSearch(Main::f);
+
+        // 결과 출력: 기대값 2/3
+        System.out.printf("%d/%d\n", x.n, x.d);
+    }
+}
