@@ -1,0 +1,58 @@
+using System;
+
+// 입력 값
+// 7
+// 0 0 0 0 1 1 1 0 0 0 0 0 0 1 1 1
+// 0 0 0 1 1 1 0 0 0 0 0 1 1 1 0 0
+// 0 0 1 1 1 1 1 1 1 1 1 1 1 1 0 0
+// 1 1 0 0 0 0 0 0 0 0 0 0 0 0 1 1
+// 1 0 0 1 1 1 0 0 0 1 1 1 0 0 0 1
+// 1 1 0 0 0 0 1 1 0 0 0 0 0 0 1 1
+// 0 0 1 1 1 1 1 1 1 1 1 1 1 1 0 0
+
+//  출력 값
+//     ###      ###
+//    ###     ###  
+//   ############  
+// ##            ##
+// #  ###   ###   #
+// ##    ##      ##
+//   ############  
+
+public class Lesson05
+{
+    public static void Main()
+    {
+        int n = int.Parse(Console.ReadLine());
+        
+        string[][] table = new string[n][];
+        for (int i = 0; i < n; i++)
+        {
+            // 標準入力から2次元配列に代入
+            table[i] = Console.ReadLine().Split(' ');
+        }
+
+        // 2차원 배열 원본 출력
+        // foreach (string[] line in table) {
+        //     foreach (string dot in line) {
+        //         Console.Write(dot);
+        //     }
+        //     Console.WriteLine();
+        // }
+        // Console.WriteLine();
+        // Console.WriteLine();
+
+        // 2차원 배열 → 도트 아트로 출력
+        for (int i = 0; i < table.Length; i++)
+        {
+            for (int j = 0; j < table[i].Length; j++)
+            {
+                if (table[i][j] == "1")
+                    Console.Write("#");
+                else
+                    Console.Write(" ");
+            }
+            Console.WriteLine();
+        }
+    }
+}
