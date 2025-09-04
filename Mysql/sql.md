@@ -75,4 +75,91 @@
 
 - TCL: COMMIT / ROLLBACK / SAVEPOINT / SET TRANSACTION
 
+---
 
+### MySQL 주요 데이터 타입 정리
+
+| 분류         | 타입                       | 설명                                                       |
+| ---------- | ------------------------ | -------------------------------------------------------- |
+| **숫자형**    | `INT` / `INTEGER`        | 정수 저장 (약 -21억 \~ +21억)                                   |
+|            | `BIGINT`                 | 더 큰 정수 (약 ±9경)                                           |
+|            | `SMALLINT`               | 작은 정수 (약 ±3만)                                            |
+|            | `DECIMAL(M,D)`           | 고정 소수점 (금액 저장에 주로 사용, 예: DECIMAL(10,2) → 99999999.99 까지) |
+|            | `FLOAT`, `DOUBLE`        | 부동소수점 (근사치 계산용, 과학/통계 계산에 사용)                            |
+| **문자형**    | `CHAR(n)`                | 고정 길이 문자열 (예: CHAR(10) → 항상 10바이트)                       |
+|            | `VARCHAR(n)`             | 가변 길이 문자열 (예: VARCHAR(100) → 최대 100바이트, 실제 글자 수만큼 저장)    |
+|            | `TEXT`                   | 긴 문자열 (최대 65,535자, 게시글/설명 저장용)                           |
+| **날짜·시간형** | `DATE`                   | 날짜 (YYYY-MM-DD)                                          |
+|            | `TIME`                   | 시간 (HH\:MM\:SS)                                          |
+|            | `DATETIME`               | 날짜 + 시간 (YYYY-MM-DD HH\:MM\:SS, 범위 넓음)                   |
+|            | `TIMESTAMP`              | 날짜 + 시간, **자동 생성·갱신 기능 지원**, 범위 제한 (1970\~2038)          |
+| **기타**     | `BOOLEAN` / `TINYINT(1)` | 논리형 (TRUE/FALSE → 내부적으로 0/1 저장)                          |
+|            | `BLOB`                   | 이진 데이터 저장 (이미지, 파일 등)                                    |
+
+---
+
+### 제약조건(Constraints)
+
+| 제약조건                      | 구문 예시                                      | 의미 / 특징                                                         |
+| ------------------------- | ------------------------------------------ | --------------------------------------------------------------- |
+| **PRIMARY KEY**           | `PRIMARY KEY (col)`                        | - 테이블 대표 키<br>- 중복 불가, NULL 불가<br>- 테이블당 1개만 지정 가능              |
+| **UNIQUE**                | `UNIQUE (col)`                             | - 값의 고유성 보장<br>- NULL 허용, 중복 불가<br>- 후보키로 활용 가능                 |
+| **NOT NULL**              | `col INT NOT NULL`                         | - NULL 값 입력 금지<br>- 반드시 값 입력 필요                                 |
+| **DEFAULT**               | `col VARCHAR(20) DEFAULT 'N/A'`            | - 값 입력 없을 때 기본값 자동 할당                                           |
+| **CHECK**                 | `CHECK (col > 0)`                          | - 조건식 만족해야 입력 가능<br>- MySQL 8.0부터 동작                            |
+| **FOREIGN KEY**           | `FOREIGN KEY (col) REFERENCES parent(col)` | - 다른 테이블 PK/UK 참조<br>- 참조 무결성 보장                                |
+| **ON DELETE / ON UPDATE** | `... ON DELETE CASCADE`                    | - 부모 데이터 삭제/수정 시 동작 지정<br>- `CASCADE`, `SET NULL`, `RESTRICT` 등 |
+
+### 제약조건 예시
+
+```
+CREATE TABLE employee (
+    emp_id INT PRIMARY KEY,             -- PK 지정
+    email VARCHAR(100) UNIQUE,          -- UNIQUE 지정
+    name VARCHAR(50) NOT NULL,          -- NOT NULL 지정
+    status VARCHAR(10) DEFAULT '재직',   -- DEFAULT 지정
+    salary INT CHECK (salary > 0),      -- CHECK 지정
+    dept_id INT,
+    CONSTRAINT fk_dept FOREIGN KEY (dept_id)
+        REFERENCES department(dept_id)  -- FK 지정
+        ON DELETE CASCADE
+);
+```
+
+```
+CREATE TABLE employee (
+    emp_id     INT PRIMARY KEY,               -- PRIMARY KEY : 기본키 지정
+    email      VARCHAR(100) UNIQUE,           -- UNIQUE : 고유값만 허용
+    name       VARCHAR(50) NOT NULL,          -- NOT NULL : 반드시 값 필요
+    status     VARCHAR(10) DEFAULT '재직',    -- DEFAULT : 기본값 지정
+    salary     INT CHECK (salary > 0),        -- CHECK : 조건 만족해야 입력 가능
+    dept_id    INT,
+    CONSTRAINT fk_dept                        -- CONSTRAINT : 제약조건 이름 지정
+        FOREIGN KEY (dept_id)                 -- FOREIGN KEY : 외래키 지정
+        REFERENCES department(dept_id)        -- REFERENCES : 참조 대상 지정
+        ON DELETE CASCADE                     -- 부모 삭제 시 자식도 삭제
+        ON UPDATE RESTRICT                    -- 부모 수정 시 거부
+);
+```
+
+---
+
+### 외래키 동작 옵션
+
+| 옵션              | 설명                                                      | 예시                    |
+| --------------- | ------------------------------------------------------- | --------------------- |
+| **CASCADE**     | 부모 행이 삭제·수정되면 자식 행도 함께 삭제·수정됨                           | `ON DELETE CASCADE`   |
+| **SET NULL**    | 부모 행이 삭제·수정되면 자식 FK 값을 `NULL`로 변경 (자식 FK가 NULL 허용이어야 함) | `ON DELETE SET NULL`  |
+| **RESTRICT**    | 부모 행이 참조 중이면 삭제·수정 불가 (MySQL 기본 동작)                     | `ON DELETE RESTRICT`  |
+| **NO ACTION**   | 사실상 `RESTRICT`와 동일하게 동작 (MySQL에선 차이 없음)                 | `ON UPDATE NO ACTION` |
+| **SET DEFAULT** | 기본값으로 설정 (MySQL InnoDB에서는 지원 안 됨)                       | 지원 X                  |
+
+---
+
+### 요약
+
+- CASCADE = 같이 지움/변경
+
+- SET NULL = 자식값 NULL 처리
+
+- RESTRICT / NO ACTION = 부모 지우기 거부
