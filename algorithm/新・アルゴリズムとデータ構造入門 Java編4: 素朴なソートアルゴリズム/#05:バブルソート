@@ -39,6 +39,23 @@ public class Main {
 		}
 	}
 
+	// 오름차순(반복문 조건과 비교 연산을 반대로 바꾸면 됨)
+	// static void bubbleSortAscending(int[] a, int n) {
+	//    for (int i = 0; i < n - 1; i++) {
+	//        // j를 i+1부터 n-1까지 증가시키며 비교
+	//        for (int j = i + 1; j < n; j++) {
+	//            if (a[i] > a[j]) {
+	//                // a[i] 와 a[j] 교환
+	//                int swap = a[i];
+	//                a[i] = a[j];
+	//                a[j] = swap;
+	//            }
+	//        }
+	//       print(a, n);
+	//    }
+	// }
+
+
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 
