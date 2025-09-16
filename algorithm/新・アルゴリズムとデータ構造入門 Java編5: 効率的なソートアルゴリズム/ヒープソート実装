@@ -1,0 +1,107 @@
+// 실행 결과
+// 정렬 전 배열: [5, 3, 17, 10, 84, 19, 6, 22, 9]
+// 오름차순 정렬 후: [3, 5, 6, 9, 10, 17, 19, 22, 84]
+// 내림차순 정렬 후: [84, 22, 19, 17, 10, 9, 6, 5, 3]
+
+import java.util.Arrays;
+
+public class HeapSortTwoMethods {
+
+    // 오름차순 정렬: 최대 힙(Max-Heap)
+    public static void heapSortAscending(int[] arr) {
+        int n = arr.length;
+
+        // 최대 힙 구성
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapifyMax(arr, n, i);
+        }
+
+        // 정렬
+        for (int i = n - 1; i > 0; i--) {
+            int temp = arr[0];
+            arr[0] = arr[i];
+            arr[i] = temp;
+
+            heapifyMax(arr, i, 0);
+        }
+    }
+
+    // 내림차순 정렬: 최소 힙(Min-Heap)
+    public static void heapSortDescending(int[] arr) {
+        int n = arr.length;
+
+        // 최소 힙 구성
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapifyMin(arr, n, i);
+        }
+
+        // 정렬
+        for (int i = n - 1; i > 0; i--) {
+            int temp = arr[0];
+            arr[0] = arr[i];
+            arr[i] = temp;
+
+            heapifyMin(arr, i, 0);
+        }
+    }
+
+    // 최대 힙 구성 (오름차순)
+    public static void heapifyMax(int[] arr, int n, int i) {
+        int largest = i;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+
+        if (left < n && arr[left] > arr[largest]) {
+            largest = left;
+        }
+
+        if (right < n && arr[right] > arr[largest]) {
+            largest = right;
+        }
+
+        if (largest != i) {
+            int swap = arr[i];
+            arr[i] = arr[largest];
+            arr[largest] = swap;
+
+            heapifyMax(arr, n, largest);
+        }
+    }
+
+    // 최소 힙 구성 (내림차순)
+    public static void heapifyMin(int[] arr, int n, int i) {
+        int smallest = i;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+
+        if (left < n && arr[left] < arr[smallest]) {
+            smallest = left;
+        }
+
+        if (right < n && arr[right] < arr[smallest]) {
+            smallest = right;
+        }
+
+        if (smallest != i) {
+            int swap = arr[i];
+            arr[i] = arr[smallest];
+            arr[smallest] = swap;
+
+            heapifyMin(arr, n, smallest);
+        }
+    }
+
+    // 실행 테스트
+    public static void main(String[] args) {
+        int[] arr1 = { 5, 3, 17, 10, 84, 19, 6, 22, 9 };
+        int[] arr2 = arr1.clone();
+
+        System.out.println("정렬 전 배열: " + Arrays.toString(arr1));
+
+        heapSortAscending(arr1);
+        System.out.println("오름차순 정렬 후: " + Arrays.toString(arr1));
+
+        heapSortDescending(arr2);
+        System.out.println("내림차순 정렬 후: " + Arrays.toString(arr2));
+    }
+}
