@@ -33,9 +33,9 @@ public class Main {
 
         
         int sum = 0;
-        int max = prefix[0];
-        int visitCheck = 1;
-        int fastDay = 1;
+        int max = Integer.MIN_VALUE; // ★ 핵심: 최소값으로 시작
+        int visitCheck = 0;          // ★ 핵심: 0으로 시작
+        int fastDay = 0;             // 0으로 두고, 발견 시 i+1로 설정
         
         for(int i=0; i <=n-k; i++){
             int start = i;
