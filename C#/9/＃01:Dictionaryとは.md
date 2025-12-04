@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-class Lesson08
+class Lesson09
 {
     public static void Main()
     {
